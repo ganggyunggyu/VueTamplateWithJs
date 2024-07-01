@@ -1,0 +1,146 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Pretendard-Regular', sans-serif;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Pretendard-Regular', sans-serif;
+  height: 100%;
+  width: 100%;
+}
+
+img {
+  margin: 0;
+  padding: 0;
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+input {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+.scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+input[type='text'],
+input[type='password'],
+input[type='email'],
+input[type='number'],
+input[type='search'],
+input[type='tel'],
+input[type='url'],
+input[type='date'],
+input[type='month'],
+input[type='week'],
+input[type='time'],
+input[type='datetime-local'] {
+  /* Add additional styles if needed */
+}
+
+input:focus {
+  outline: none;
+}
+
+input::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+input::-moz-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+input:-ms-input-placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+
+input::placeholder {
+  color: inherit;
+  opacity: 0.5;
+}
+.opacity-modal-enter-active,
+.opacity-modal-leave-active {
+  transition: opacity 0.5s ease;
+}
+.opacity-modal-enter-from,
+.opacity-modal-leave-to {
+  opacity: 0;
+}
+
+:root {
+  /* 전역으로 사용할 스타일 생성 */
+  --color-red: #d95151;
+  --color-mint: #9fbaaa;
+  --color-yellow-green: #d8da6d;
+  --color-pink: #f5e9e9;
+  --color-light-green: #e6f0ea;
+  --color-light-yellow: #f4f5d2;
+  --color-green: #005f40;
+  --color-light-gray: #d9d9d9;
+  --color-dark-gray: #575757;
+  --color-gray: #999999;
+  --color-black: #3c3c3c;
+  --bg-red: #f5e9e9;
+  --bg-yellow-green: #f4f5d2;
+  --bg-mint: #e6f0ea;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 22px;
+  --font-size-3xl: 24px;
+}
+
+/* 추가적인 반응형 설정 */
+@media (max-width: 768px) {
+  :root {
+    --font-size-sm: 12px;
+    --font-size-md: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 20px;
+    --font-size-3xl: 22px;
+  }
+}
