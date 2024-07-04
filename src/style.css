@@ -18,6 +18,7 @@ html {
   font-family: 'Pretendard-Regular', sans-serif;
   height: 100%;
   width: 100%;
+  box-sizing: border-box;
 }
 
 img {
@@ -53,27 +54,23 @@ input {
   -moz-appearance: none;
   appearance: none;
 }
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  /* border: 1px solid #ccc; */
+  padding: 10px;
+}
+
 .scroll::-webkit-scrollbar {
   display: none;
 }
 .scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-input[type='text'],
-input[type='password'],
-input[type='email'],
-input[type='number'],
-input[type='search'],
-input[type='tel'],
-input[type='url'],
-input[type='date'],
-input[type='month'],
-input[type='week'],
-input[type='time'],
-input[type='datetime-local'] {
-  /* Add additional styles if needed */
 }
 
 input:focus {
@@ -110,37 +107,10 @@ input::placeholder {
 
 :root {
   /* 전역으로 사용할 스타일 생성 */
-  --color-red: #d95151;
-  --color-mint: #9fbaaa;
-  --color-yellow-green: #d8da6d;
-  --color-pink: #f5e9e9;
-  --color-light-green: #e6f0ea;
-  --color-light-yellow: #f4f5d2;
-  --color-green: #005f40;
-  --color-light-gray: #d9d9d9;
-  --color-dark-gray: #575757;
-  --color-gray: #999999;
-  --color-black: #3c3c3c;
-  --bg-red: #f5e9e9;
-  --bg-yellow-green: #f4f5d2;
-  --bg-mint: #e6f0ea;
-  --font-size-xs: 12px;
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 18px;
-  --font-size-xl: 20px;
-  --font-size-2xl: 22px;
-  --font-size-3xl: 24px;
 }
 
 /* 추가적인 반응형 설정 */
 @media (max-width: 768px) {
   :root {
-    --font-size-sm: 12px;
-    --font-size-md: 14px;
-    --font-size-lg: 16px;
-    --font-size-xl: 18px;
-    --font-size-2xl: 20px;
-    --font-size-3xl: 22px;
   }
 }
