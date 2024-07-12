@@ -1,24 +1,22 @@
 @font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Pretendard-Regular', sans-serif;
-}
-
+*,
 body,
 html {
   margin: 0;
   padding: 0;
-  font-family: 'Pretendard-Regular', sans-serif;
+  box-sizing: border-box;
+  font-family: "Pretendard-Regular", sans-serif;
+}
+
+body,
+html {
   height: 100%;
   width: 100%;
-  box-sizing: border-box;
 }
 
 img {
@@ -61,7 +59,6 @@ select {
   -moz-appearance: none;
   appearance: none;
   border-radius: 0;
-  /* border: 1px solid #ccc; */
   padding: 10px;
 }
 
@@ -109,7 +106,7 @@ input::placeholder {
   /* 전역으로 사용할 스타일 생성 */
 }
 
-/* 추가적인 반응형 설정 */
+/* 반응형 설정 */
 @media (max-width: 768px) {
   :root {
   }
