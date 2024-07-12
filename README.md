@@ -25,6 +25,7 @@ mkcert localhost
 
 ## tree
 
+```
 ├── App.vue
 ├── app
 │   ├── config
@@ -72,6 +73,7 @@ mkcert localhost
 └── views
 ├── Routing1.vue
 └── Routing2.vue
+```
 
 ## update
 
