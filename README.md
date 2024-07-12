@@ -26,6 +26,7 @@ mkcert localhost
 ## tree
 
 ```
+.
 ├── App.vue
 ├── app
 │   ├── config
@@ -35,8 +36,8 @@ mkcert localhost
 │   ├── store
 │   │   └── useDarkMode.js
 │   └── styles
-│   ├── app.css
-│   └── index.css
+│       ├── app.css
+│       └── index.css
 ├── assets
 │   └── vue.svg
 ├── entities
@@ -44,23 +45,23 @@ mkcert localhost
 │   │   ├── api
 │   │   │   └── api.js
 │   │   └── components
-│   │   └── UI.vue
+│   │       └── UI.vue
 │   └── domain2
-│   ├── api
-│   │   └── api.js
-│   └── components
-│   └── UI.vue
+│       ├── api
+│       │   └── api.js
+│       └── components
+│           └── UI.vue
 ├── features
 │   ├── domain1
 │   │   ├── api
 │   │   │   └── api.js
 │   │   └── components
-│   │   └── UI.vue
+│   │       └── UI.vue
 │   └── domain2
-│   ├── api
-│   │   └── api.js
-│   └── components
-│   └── UI.vue
+│       ├── api
+│       │   └── api.js
+│       └── components
+│           └── UI.vue
 ├── main.js
 ├── router
 │   └── index.js
@@ -69,10 +70,10 @@ mkcert localhost
 │   ├── hooks
 │   │   └── useSetVh.js
 │   └── lib
-│   └── setViewPort.js
+│       └── setViewPort.js
 └── views
-├── Routing1.vue
-└── Routing2.vue
+    ├── Routing1.vue
+    └── Routing2.vue
 ```
 
 ## update
