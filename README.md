@@ -229,7 +229,7 @@ const useSetVh = () => {};
 
 ```
 ❌
-div {
+div {****
   display: flex;
 }
 
@@ -238,5 +238,7 @@ div {
   display: flex;
 }
 ```
+
+3. Animation을 정의할 땐 src/app/style/animation.css 파일을 별도로 생성한다.
 
 ## update
