@@ -1,8 +1,12 @@
-import { setVh } from '../lib/setViewPort';
-import { onMounted } from 'vue';
+import { setVh } from "../lib/setViewPort";
+import { onMounted, ref } from "vue";
 export const useSetVh = () => {
+  const vhRef = ref(null);
   onMounted(() => {
-    setVh();
-    window.addEventListener('resize', setVh);
+    const vh = setVh();
+    vhRef.value = vh;
+    window.addEventListener("resize", setVh);
   });
+
+  return { vhRef };
 };
