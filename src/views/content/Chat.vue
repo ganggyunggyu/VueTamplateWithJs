@@ -1,25 +1,46 @@
 <script setup>
-  import Header from '@/entities/chat/components/Header.vue';
-  import Guide from '@/entities/chat/components/Guide.vue';
-  import ContentCard from '@/entities/chat/components/ContentCard.vue';
-  import BottomNavigation from '@/entities/chat/components/BottomNavigation.vue';
-  import Button from '@/shared/components/Button.vue';
+  import { ref, onMounted } from 'vue';
+  import Header from '@/entities/content/components/Header.vue';
+  import Guide from '@/entities/content/components/Guide.vue';
+  import ContentList from '@/features/content/components/ContentList.vue';
+  import BottomNavigation from '@/entities/content/components/BottomNavigation.vue';
   import useGetConstant from '@/shared/hooks/useGetConstant';
-
   import { CONTENT_KO, CONTENT_EN } from '@/assets/constants/content';
+  import { useContentStore } from '@/app/store/useContentStore';
+  import { storeToRefs } from 'pinia';
 
-  const { data: contentList } = useGetConstant(CONTENT_KO, CONTENT_EN);
+  const store = useContentStore();
+  const { contentList } = storeToRefs(store);
+
+  console.log(contentList.value);
+  const dummy = [
+    {
+      id: 5,
+      image: 'https://via.placeholder.com/150',
+      place: 'Van Gogh Museum, Amsterdam',
+      title: 'Sunflowers',
+      name: 'Vincent van Gogh',
+    },
+    {
+      id: 6,
+      image: 'https://via.placeholder.com/150',
+      place: 'Museo del Prado, Madrid',
+      title: 'Las Meninas',
+      name: 'Diego Velázquez',
+    },
+  ];
+
+  const { data } = useGetConstant(CONTENT_KO, CONTENT_EN);
 </script>
 <template>
   <main class="chat-page">
     <Header />
-    <Guide />
-    <section class="content-container scroll">
-      <ContentCard v-for="content in contentList" :key="content.id" :content="content" />
-    </section>
-    <section class="keyword-container">
-      <Button class="keyword-button" label="키워드 선택" />
-    </section>
+    <div class="chat-container">
+      <p>{{ selectedKeyword }}</p>
+      <Guide />
+      <ContentList :content-list="dummy" />
+      <ContentList :content-list="contentList" />
+    </div>
     <BottomNavigation />
   </main>
 </template>
@@ -29,30 +50,38 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    height: calc(85 * var(--vh));
+    width: 100%;
+    height: calc(100 * var(--vh));
+    background-color: var(--color-gray-10);
   }
   .chat-container {
-    width: 90%;
-  }
-  .content-container {
+    position: relative;
+    bottom: calc(10 * var(--vh));
+    width: 100%;
+    height: calc(82 * var(--vh));
+    margin-top: calc(8 * var(--vh));
+    padding-bottom: calc(10 * var(--vh));
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    width: 90%;
-    height: calc(50 * var(--vh));
-    background-color: aqua;
-    padding: 10px;
     overflow-y: scroll;
   }
-  .keyword-container {
-    width: 90%;
-    z-index: 1;
-    display: flex;
-    flex-direction: column-reverse;
-    height: calc(16 * var(--vh));
+  .chat-keyword {
+    position: fixed;
+    bottom: calc(12 * var(--vh));
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9;
   }
-  .keyword-button {
-    width: 100%;
-    height: calc(8 * var(--vh));
+  .submit-button {
+    position: fixed;
+    bottom: calc(12 * var(--vh));
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>

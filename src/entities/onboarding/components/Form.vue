@@ -10,7 +10,7 @@
   };
   const handleClick = () => {
     console.log(nicknameRef);
-    router.push('/onboarding/type');
+    router.push('/content-map');
   };
 </script>
 <template>
@@ -22,7 +22,12 @@
       placeholder="닉네임 (최대 8자)"
       :is-center="true"
     />
-    <Button type="button" @click="handleClick" class="onboarding-button" label="작성 완료" />
+    <Button
+      type="button"
+      @click="handleClick"
+      class="onboarding-button"
+      label="작성 완료"
+    />
   </form>
 </template>
 <style scoped>

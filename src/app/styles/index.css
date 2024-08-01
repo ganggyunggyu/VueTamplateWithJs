@@ -1,38 +1,27 @@
-@import url('./app.css');
+/* @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css'); */
 @import url('./animation.css');
-
+@import url('./app.css');
 @font-face {
-  font-family: 'Pretendard-Regular';
-  src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-family: 'notosanskr';
+  src: url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
   font-weight: 400;
   font-style: normal;
 }
-body {
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  overflow: hidden;
-}
 *,
 body,
-html {
+html,
+div,
+p {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Pretendard-Regular', sans-serif;
+  font-family: 'notosanskr';
 }
 
 body,
 html {
   height: 100%;
   width: 100%;
-}
-
-main {
-  width: 100%;
-  height: calc(100 * var(--vh));
 }
 
 img {
@@ -119,11 +108,11 @@ input::placeholder {
 }
 
 :root {
-  /* 전역으로 사용할 스타일 생성 */
-}
-
-/* 반응형 설정 */
-@media (max-width: 768px) {
-  :root {
-  }
+  --color-black: #10181f;
+  --color-white: #fefefe;
+  --color-gray-50: #4c5156;
+  --color-gray-40: #767676;
+  --color-gray-30: #cccccd;
+  --color-gray-20: #e1e1e1;
+  --color-gray-10: #f3f3f3;
 }

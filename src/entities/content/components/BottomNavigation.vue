@@ -2,6 +2,9 @@
   import { ref } from 'vue';
   import Button from '../../../shared/components/Button.vue';
   import { useRouter } from 'vue-router';
+  import SettingIcon from '../../../shared/icons/SettingIcon.vue';
+  import MapIcon from '../../../shared/icons/MapIcon.vue';
+  import ChatIcon from '@/shared/icons/ChatIcon.vue';
 
   const router = useRouter();
   const tabRef = ref(router.currentRoute.value.name);
@@ -19,22 +22,25 @@
 <template>
   <nav class="bottom-navigation">
     <Button
-      class="bottom-navigation-button"
-      :class="tabRef === 'Setting' && 'bottom-navigation-button-active'"
+      :class="tabRef === 'Setting' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
       @click="handleSettingClick"
       label="설정"
+      :icon="SettingIcon"
+      iconSize="icon-md"
     />
     <Button
-      class="bottom-navigation-button"
-      :class="tabRef === 'Map' && 'bottom-navigation-button-active'"
+      :class="tabRef === 'Map' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
       @click="handleMapClick"
       label="지도"
+      :icon="MapIcon"
+      iconSize="icon-md"
     />
     <Button
-      class="bottom-navigation-button"
-      :class="tabRef === 'Chat' && 'bottom-navigation-button-active'"
+      :class="tabRef === 'Chat' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
       @click="handleChatClick"
       label="채팅"
+      :icon="ChatIcon"
+      iconSize="icon-md"
     />
   </nav>
 </template>
@@ -45,20 +51,24 @@
     left: 0;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    height: calc(15 * var(--vh));
+    justify-content: space-between;
+    height: calc(10 * var(--vh));
     width: 100%;
+    padding: 0 40px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
     background-color: white;
+    z-index: 2;
   }
   .bottom-navigation-button-active {
-    background-color: red;
-    transform: scale(1.1); /* 예시로 버튼을 확대하는 transform 추가 */
+    color: var(--color-black);
+    fill: var(--color-black);
+    height: 100%;
+    width: 64px;
   }
   .bottom-navigation-button {
-    padding: 30px;
-    transition: background-color 0.5s, transform 0.5s; /* background-color와 transform 속성에 transition 적용 */
+    height: 100%;
+    width: 64px;
+    color: var(--color-gray-30);
+    fill: var(--color-gray-30);
   }
-  /* .bottom-navigation-button:hover {
-    background-color: blue;
-  } */
 </style>

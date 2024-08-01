@@ -7,6 +7,7 @@ export const CONTENT_KO = {
       place: '뉴욕 현대 미술관',
       title: '별이 빛나는 밤에',
       name: '빈센트 반 고흐',
+      latLng: { lat: 37.2939662, lng: 127.0493934 },
     },
     {
       id: 2,
@@ -14,6 +15,7 @@ export const CONTENT_KO = {
       place: '파리 루브르 박물관',
       title: '모나리자',
       name: '레오나르도 다 빈치',
+      latLng: { lat: 37.294017, lng: 127.049517 },
     },
     {
       id: 3,
@@ -83,6 +85,7 @@ export const CONTENT_EN = {
       place: 'Museum of Modern Art, New York',
       title: 'Starry Night',
       name: 'Vincent van Gogh',
+      latLng: { lat: 37.2939662, lng: 127.0493934 },
     },
     {
       id: 2,
@@ -90,6 +93,7 @@ export const CONTENT_EN = {
       place: 'Louvre Museum, Paris',
       title: 'Mona Lisa',
       name: 'Leonardo da Vinci',
+      latLng: { lat: 37.294017, lng: 127.049517 },
     },
     {
       id: 3,

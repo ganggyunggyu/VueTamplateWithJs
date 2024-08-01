@@ -10,18 +10,32 @@
   import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
   import { ref } from 'vue';
 
-  const ONBOARDING_SECOND_SECTION = ['평화님을 표현하는', '단어를3가지 선택해주세요.'];
+  const ONBOARDING_SECOND_SECTION = [
+    '평화님을 표현하는',
+    '단어를3가지 선택해주세요.',
+  ];
 
-  const { data: characterList } = useGetConstant(CHARACTER_KO, CHARACTER_EN);
+  const { data } = useGetConstant(CHARACTER_KO, CHARACTER_EN);
 
   const router = useRouter();
+  const keywordGroupRef = ref([]);
+
+  for (let i = 0; i < data.value.length; i += 4) {
+    const chunk = data.value.slice(i, i + 4);
+    keywordGroupRef.value.push(chunk);
+  }
+
+  console.log(keywordGroupRef.value);
 
   const keywordRef = ref([]);
   const isButtonActive = ref(false);
   const handleClick = () => {
     if (keywordRef.value.length === 3) {
-      localStorage.setItem('selectedKeywords', JSON.stringify(keywordRef.value));
-      router.push('/content-chat');
+      localStorage.setItem(
+        'selectedKeywords',
+        JSON.stringify(keywordRef.value),
+      );
+      router.push('/content-map');
     }
   };
   const isSelected = (id) => {
@@ -37,24 +51,40 @@
     isButtonActive.value = keywordRef.value.length === 3;
     console.debug(keywordRef.value);
   };
+
+  const getClass = (index) => {
+    return index % 2 === 0 ? 'keyword-article-even' : 'keyword-article-odd';
+  };
 </script>
 
 <template>
   <main class="onboarding-page">
     <Navigation />
     <Guide :guide="ONBOARDING_SECOND_SECTION" />
-    <section class="character-card-container">
-      <figure
-        v-for="character in characterList"
-        :key="character.id"
-        class="character-card"
-        :class="isSelected(character.id) && 'test'"
-        @click="handleKeywordClick(character.id)"
+    <section class="keyword-section">
+      <article
+        class="keyword-article scroll"
+        v-for="(keywordList, i) in keywordGroupRef"
+        :key="i"
+        :class="getClass(i + 1)"
       >
-        <p>{{ character.char }}</p>
-      </figure>
+        <figure
+          v-for="keyword in keywordList"
+          :key="keyword.id"
+          class="character-card"
+          :class="isSelected(keyword.id) && 'test'"
+          @click="handleKeywordClick(keyword.id)"
+        >
+          <p>{{ keyword.char }}</p>
+        </figure>
+      </article>
     </section>
-    <Button :disabled="!isButtonActive" @click="handleClick" class="onboarding-button" label="선택 완료" />
+    <Button
+      :disabled="!isButtonActive"
+      @click="handleClick"
+      class="onboarding-button"
+      label="선택 완료"
+    />
   </main>
 </template>
 
@@ -67,24 +97,16 @@
     height: calc(100 * var(--vh));
   }
 
-  .character-card-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 10px;
-    overflow: scroll;
-    width: 100%;
-  }
-
   .character-card {
-    width: 28vw;
     height: calc(10 * var(--vh));
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 12px 24px;
     background: white;
     border-radius: 40px;
     border: solid 1px #ccc;
+    min-width: fit-content;
   }
 
   .onboarding-button {
@@ -96,5 +118,24 @@
   .test {
     background-color: black;
     color: white;
+  }
+  .keyword-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .keyword-article-odd {
+    display: flex;
+    gap: 6px;
+    overflow: scroll;
+    padding: 2px 30px 2px 10px;
+  }
+  .keyword-article-even {
+    display: flex;
+    gap: 6px;
+    overflow: scroll;
+    padding: 2px 10px 2px 30px;
+    position: relative;
+    width: 100%;
   }
 </style>

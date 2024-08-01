@@ -1,176 +1,149 @@
 <script setup>
+  import { storeToRefs } from 'pinia';
+
+  import { useContentStore } from '../../app/store/useContentStore';
+  import { useLanguageStore } from '../../app/store/useLanguageStore.js';
+
+  import useTouchDirection from '@/features/content/hooks/useTouchDirection';
+  import Map from '@/entities/content/components/Map.vue';
+  import ContentCard from '@/entities/content/components/ContentCard.vue';
   import Button from '@/shared/components/Button.vue';
-  import BottomNavigation from '@/entities/chat/components/BottomNavigation.vue';
-  import useGetConstant from '@/shared/hooks/useGetConstant';
-  import { CONTENT_EN, CONTENT_KO } from '@/assets/constants/content';
-  import ContentCard from '@/entities/chat/components/ContentCard.vue';
-  import { onMounted, ref } from 'vue';
-  const { data: contentList } = useGetConstant(CONTENT_KO, CONTENT_EN);
 
-  const contentRef = ref(false);
-  const metrics = ref({
-    touchStart: {
-      sheetY: 0,
-      touchY: 0,
-    },
-    snap: 0,
-    isContentAreaTouched: false,
-  });
-  const newHeightRef = ref(null);
+  const contentStore = useContentStore();
+  const languageStore = useLanguageStore();
+  const { contentList } = storeToRefs(contentStore);
+  const { language } = storeToRefs(languageStore);
+  const { setLanguage } = languageStore;
 
-  const handleClick = () => {
-    contentRef.value = !contentRef.value;
-  };
-
-  onMounted(() => {
-    const header = document.querySelector('.content-container-header');
-    const container = document.querySelector('.content-container');
-
-    const handleTouchStart = (e) => {
-      metrics.value.touchStart.sheetY = container.getBoundingClientRect().height;
-      metrics.value.touchStart.touchY = e.touches[0].clientY;
-    };
-
-    const handleTouchMove = (e) => {
-      const { touchStart } = metrics.value;
-      const currentTouch = e.touches[0];
-      const touchOffset = currentTouch.clientY - touchStart.touchY;
-
-      newHeightRef.value = touchStart.sheetY - touchOffset;
-      container.style.height = `${newHeightRef.value}px`;
-    };
-
-    const handleTouchEnd = (e) => {
-      e.preventDefault();
-
-      // if (newHeightRef.value < 400) newHeightRef.value = 0;
-      if (newHeightRef.value < 100) newHeightRef.value = 0;
-      if (newHeightRef.value > 100) newHeightRef.value = 1000;
-      container.style.height = `${newHeightRef.value}px`;
-    };
-
-    header.addEventListener('touchstart', handleTouchStart);
-    header.addEventListener('touchmove', handleTouchMove);
-    header.addEventListener('touchend', handleTouchEnd);
-  });
-
-  // 선택된 옵션을 관리하는 변수
-  const selectedOption = ref('distance');
-
-  // 옵션 변경 핸들러
-  const handleOptionChange = () => {
-    console.log('Selected option:', selectedOption.value);
-    // 여기에 옵션 변경에 따른 로직을 추가할 수 있습니다.
-  };
+  const { handleTouchStart, handleTouchMove, handleTouchEnd, direction } =
+    useTouchDirection();
 </script>
-
 <template>
   <main class="map-page">
+    <p>{{ direction }}</p>
+    <p>{{ language }}</p>
     <header class="header">
-      <h1 class="header-title">지도</h1>
+      <h1 class="header-title title-16px">지도</h1>
       <nav class="header-nav">
         <Button class="nav-item" label="1층" />
         <Button class="nav-item" label="2층" />
         <Button class="nav-item" label="3층" />
+        <button @click="setLanguage">반응형 데이터 테스트 버튼</button>
       </nav>
     </header>
-    <div id="map" style="width: 100vw; height: 100vh" />
-    <div @click="handleClick" class="content-container-header">
-      <div class="dropdown-container">
-        <select v-model="selectedOption" @change="handleOptionChange">
-          <option value="distance">가까운 순</option>
-          <option value="alphabetical">가나다 순</option>
-        </select>
+    <Map :dir="direction" />
+
+    <section
+      class="content-wrapper"
+      :class="{
+        'content-wrapper-active': direction === 'Up',
+        'content-wrapper-down': direction === 'Down',
+        'content-wrapper': direction === 'Mid',
+      }"
+    >
+      <div
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
+        @click="handleClick"
+        class="content-container-header"
+      >
+        <div class="bar" />
       </div>
-    </div>
-    <section :class="contentRef && 'content-container-active'" class="content-container scroll">
-      <ContentCard v-for="content in contentList" :key="content.id" :content="content" />
+
+      <div class="content-container scroll">
+        <ContentCard
+          v-for="content in contentList"
+          :key="content.id"
+          :content="content"
+        />
+      </div>
     </section>
+
     <BottomNavigation />
   </main>
 </template>
-
 <style scoped>
   .map-page {
     display: flex;
     align-items: center;
     flex-direction: column;
     height: calc(85 * var(--vh));
+    touch-action: none;
   }
   .header {
-    width: 90%;
-    height: calc(8 * var(--vh));
-    background-color: mediumspringgreen;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    padding: 6px 16px;
+    z-index: 1;
+    gap: 6px;
   }
+  .header-title {
+    height: calc(10 * var(--vh));
+    display: flex;
+    align-items: center;
+  }
+
   .header-nav {
     display: flex;
-    gap: 10px;
+    gap: 4px;
   }
+
   .nav-item {
-    background-color: aqua;
-    padding: 8px 15px;
-    border-radius: 40px;
+    background-color: var(--color-gray-10);
+    padding: 7px 12px;
+    border-radius: 88px;
   }
+
   .content-container {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
     width: 100%;
-    background-color: aqua;
     overflow-y: scroll;
     transition: 0.5s all;
-  }
-  .content-container-header {
-    min-height: 40px;
-    background-color: brown;
-    width: 100vw;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-  }
-  .dropdown-container {
-    padding: 10px;
-    background-color: white;
-    z-index: 999;
-    position: relative;
-    height: 40px;
-    width: 100px;
-  }
-  .dropdown-item {
-    padding: 10px;
-    background-color: white;
-    height: 40px;
-    width: 100px;
-  }
-  .dropdown-list {
-    transform: translateY(40px);
-  }
-  .dropdown-item-selected {
-    padding: 10px;
-    background-color: white;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .content-container-active {
-    height: calc(300 * var(--vh));
-  }
-  .dropdown-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px;
+    padding: 0 10px;
+    background-color: var(--color-white);
+    z-index: 1;
   }
 
-  select {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    outline: none;
-    cursor: pointer;
+  .content-container-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    min-height: 40px;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-white);
+    z-index: 2;
+  }
+  .bar {
+    border-radius: 8px;
+    background: var(---LIght-030, #e2e2e2);
+    width: 32px;
+    height: 4px;
+    flex-shrink: 0;
+  }
+  .content-wrapper {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(30 * var(--vh));
+    left: 0;
+    bottom: calc(10 * var(--vh));
+    transition: all 0.5s;
+  }
+  .content-wrapper-down {
+    height: calc(8 * var(--vh));
+  }
+  .content-wrapper-active {
+    height: calc(70 * var(--vh));
   }
 </style>

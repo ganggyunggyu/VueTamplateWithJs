@@ -13,7 +13,9 @@
     <div class="button-container">
       <Button @click="handleClick('ko')" label="한국어" />
       <Button @click="handleClick('en')" label="English" />
-      <router-link v-for="(route, i) in routes" :to="route.path" :key="i">{{ route.name }}</router-link>
+      <router-link v-for="(route, i) in routes" :to="route.path" :key="i">{{
+        route.name
+      }}</router-link>
     </div>
   </main>
 </template>

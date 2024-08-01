@@ -1,5 +1,5 @@
 <template>
-  <Carousel @init="handleInit" @slide-start="handleSlideStart" :wrap-around="true">
+  <Carousel :items-to-show="1" :wrap-around="true" :transition="500">
     <Slide v-for="slide in 10" :key="slide">
       <div class="carousel__item">{{ slide }}</div>
     </Slide>
@@ -38,9 +38,8 @@
 
 <style>
   .carousel__item {
-    /* min-height: 200px; */
+    min-height: 200px;
     width: 100%;
-    height: calc(50 * var(--vh));
     background-color: var(--vc-clr-primary);
     color: var(--vc-clr-white);
     font-size: 20px;
@@ -51,7 +50,7 @@
   }
 
   .carousel__slide {
-    /* padding: 10px; */
+    padding: 10px;
   }
 
   .carousel__prev,

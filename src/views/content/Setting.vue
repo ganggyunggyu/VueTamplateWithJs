@@ -1,5 +1,5 @@
 <script setup>
-  import BottomNavigation from '@/entities/chat/components/BottomNavigation.vue';
+  import BottomNavigation from '@/entities/content/components/BottomNavigation.vue';
 </script>
 <template>
   <main class="setting-page">

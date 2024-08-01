@@ -1,14 +1,13 @@
 <script setup>
-  import Button from '@/shared/components/Button.vue';
+  import Button from '../../../shared/components/Button.vue';
   import { defineProps } from 'vue';
 
   const props = defineProps({ guideList: Array });
-  const GUIDE = ['바람의 언덕에서', '거대 압정과 소인국 사진 찍기'];
 </script>
 <template>
   <div class="guide-container">
     <div class="guide-text-container">
-      <p class="guide-text" v-for="(p, i) in GUIDE" :key="i">{{ p }}</p>
+      <p class="guide-text" v-for="(p, i) in props.guideList" :key="i">{{ p }}</p>
     </div>
     <div class="guide-button-container">
       <Button class="guide-button" label="길안내" />

@@ -2,8 +2,8 @@
   import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
 
-  import ContentGuide from '@/entities/chat/components/ContentGuide.vue';
-  import ContentHeader from '@/entities/chat/components/ContentHeader.vue';
+  import ContentGuide from '@/entities/content/components/ContentGuide.vue';
+  import ContentHeader from '@/entities/content/components/ContentHeader.vue';
 
   import Modal from '@/shared/components/Modal.vue';
 
@@ -30,7 +30,11 @@
 </script>
 <template>
   <transition name="fade">
-    <Modal v-if="isModalRef" :modalTextList="MODAL_TEXT" :buttonConfigList="buttonConfig" />
+    <Modal
+      v-if="isModalRef"
+      :modalTextList="MODAL_TEXT"
+      :buttonConfigList="buttonConfig"
+    />
   </transition>
   <main @click="toggleModal" class="content-page">
     <ContentHeader />
