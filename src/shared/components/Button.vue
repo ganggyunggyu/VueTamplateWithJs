@@ -1,20 +1,35 @@
 <script setup>
-  const props = defineProps(['label', 'onClick']);
+  const props = defineProps({
+    label: String,
+    type: String,
+    icon: [Object, Function],
+    iconSize: String,
+  });
 </script>
 <template>
-  <button @click="props.onClick">{{ props.label }}</button>
+  <button :class="type && type" type="button">
+    <component :class="props.iconSize" v-if="props.icon" :is="props.icon" />
+    {{ props.label }}
+  </button>
 </template>
 <style scoped>
-  button {
-    text-align: center;
+  .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
   }
   /** button 색상과 사이즈를 조합하여 사용 */
   .sm {
+    width: 120px;
+    height: 46px;
     border-radius: 24px;
-    padding: 12px 32px 14px 32px;
+    padding: 12px 34.5px 14px 34.5px;
     font-size: 14px;
     font-weight: 700;
   }
+
   .md {
     min-width: 144px;
     font-size: 14px;
@@ -22,14 +37,20 @@
     padding: 12px 32px 14px 32px;
     border-radius: 24px;
   }
+
   .lg {
-    width: 100vw;
-    padding: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 0 14px 0;
+    width: 90%;
+    border-radius: 24px;
   }
+
   .black {
     background-color: var(--color-black);
     color: var(--color-white);
   }
+
   .gray-xs {
     background-color: var(--color-gray-30);
     color: var(--color-black);
@@ -37,53 +58,70 @@
     font-size: 14px;
     font-weight: 700;
   }
+
   .gray-20 {
     background-color: var(--color-gray-20);
     color: var(--color-white);
   }
+
   .gray-10 {
     background-color: var(--color--gray-10);
     border: 1px solid var(--color-gray-30);
     color: var(--color-gray-50);
   }
-  /** chip 색상과 사이즈 하나에 통일 */
-  .chip-gray-sm {
+
+  .gray-30 {
+    background-color: var(--color-gray-30);
+    border: 1px solid var(--color-gray-50);
+    color: var(--color-black);
+  }
+  .disable {
+    background-color: var(--color-gray-20);
+    color: var(--color-white);
+  }
+
+  /** chip */
+
+  .chip-sm {
+    display: flex;
+    gap: 5px;
     font-size: 12px;
     font-weight: 500;
     border-radius: 16px;
+    padding: 7.5px 12px 8.5px 12px;
+    transition: all 0.5s;
+  }
+  .chip-md {
+    display: flex;
+    gap: 5px;
+    border-radius: 24px;
+    padding: 10.5px 24px 11.5px 24px;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: fit-content;
+    transition: all 0.5s;
+  }
+  .chip-lg {
+    border-radius: 24px;
+    padding: 12.5px 24px 13.5px 24px;
+    font-size: 12px;
+    font-weight: 500;
+    min-width: fit-content;
+    transition: all 0.5s;
+  }
+  .chip-gray {
     background-color: var(--color-gray-50);
     border: 1px solid var(--color-gray-40);
+    color: var(--color-white);
   }
-  .chip-white-sm {
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 16px;
+
+  .chip-white {
     background-color: var(--color-white);
     border: 1px solid var(--color-gray-10);
-    padding: 7px 12px;
   }
-  .chip-gray-10-md {
+  .chip-light-gray {
     background-color: var(--color-gray-10);
     color: var(--color-black);
-    border-radius: 24px;
     border: 1px solid var(--color-gray-20);
-    padding: 10.5px 24px 11.5px 24px;
-    font-size: 12px;
-    font-weight: 500;
-    min-width: fit-content;
   }
-  .chip-gray-50-md {
-    background-color: var(--color-gray-50);
-    color: var(--color-white);
-    border-radius: 24px;
-    border: 1px solid var(--color-gray-40);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 10.5px 24px 11.5px 24px;
-    min-width: fit-content;
-  }
-  /* .chip-icon-white {
-    background-color: var(--color-white);
-    color: var(--color-black);
-  } */
 </style>

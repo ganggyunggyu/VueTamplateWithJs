@@ -1,87 +1,67 @@
 <script setup>
+  import { computed } from 'vue';
   import { useRouter } from 'vue-router';
-
-  import Navigation from '@/entities/onboarding/components/Navigation.vue';
-  import Guide from '@/entities/onboarding/components/Guide.vue';
-
-  import useGetConstant from '@/shared/hooks/useGetConstant';
-  import Button from '@/shared/components/Button.vue';
-
-  import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
-  import { ref } from 'vue';
-
-  const ONBOARDING_SECOND_SECTION = [
-    '평화님을 표현하는',
-    '단어를3가지 선택해주세요.',
-  ];
-
-  const { data } = useGetConstant(CHARACTER_KO, CHARACTER_EN);
+  import Guide from '../../entities/onboarding/components/Guide.vue';
+  import useKeyword from '../../shared/hooks/useKeyword';
+  import KeywordSelector from '../../shared/components/KeywordSelector.vue';
+  import Button from '../../shared/components/Button.vue';
+  import LeftArrow from '../../shared/icons/LeftArrow.vue';
 
   const router = useRouter();
-  const keywordGroupRef = ref([]);
+  const ONBOARDING_SECOND_SECTION = ['관심있는 분야를', '3가지 선택해주세요.'];
+  const {
+    addSelectedKeywordList,
+    keywordGroupRef,
+    getIsSelected,
+    selectedKeywordList,
+  } = useKeyword({
+    size: 4,
+  });
 
-  for (let i = 0; i < data.value.length; i += 4) {
-    const chunk = data.value.slice(i, i + 4);
-    keywordGroupRef.value.push(chunk);
-  }
+  const isButtonActive = computed(() => selectedKeywordList.value.length === 3);
+  //기획에 따라 수정 필요
 
-  console.log(keywordGroupRef.value);
-
-  const keywordRef = ref([]);
-  const isButtonActive = ref(false);
-  const handleClick = () => {
-    if (keywordRef.value.length === 3) {
+  const handleSubmitClick = () => {
+    if (selectedKeywordList.value.length === 3) {
       localStorage.setItem(
-        'selectedKeywords',
-        JSON.stringify(keywordRef.value),
+        'selectedKeywordList',
+        JSON.stringify(selectedKeywordList.value),
       );
-      router.push('/content-map');
+      router.push('/content-chat');
     }
-  };
-  const isSelected = (id) => {
-    return keywordRef.value.includes(id);
   };
 
   const handleKeywordClick = (id) => {
-    if (keywordRef.value.includes(id)) {
-      keywordRef.value = keywordRef.value.filter((keyword) => keyword !== id);
-    } else if (keywordRef.value.length < 3) {
-      keywordRef.value.push(id);
-    }
-    isButtonActive.value = keywordRef.value.length === 3;
-    console.debug(keywordRef.value);
+    addSelectedKeywordList(id);
   };
 
-  const getClass = (index) => {
-    return index % 2 === 0 ? 'keyword-article-even' : 'keyword-article-odd';
+  const handleBack = () => {
+    router.back();
   };
 </script>
 
 <template>
   <main class="onboarding-page">
-    <Navigation />
-    <Guide :guide="ONBOARDING_SECOND_SECTION" />
-    <section class="keyword-section">
-      <article
-        class="keyword-article scroll"
-        v-for="(keywordList, i) in keywordGroupRef"
-        :key="i"
-        :class="getClass(i + 1)"
-      >
-        <figure
-          v-for="keyword in keywordList"
-          :key="keyword.id"
-          class="character-card"
-          :class="isSelected(keyword.id) && 'test'"
-          @click="handleKeywordClick(keyword.id)"
-        >
-          <p>{{ keyword.char }}</p>
-        </figure>
-      </article>
-    </section>
     <Button
+      class="back-button icon-lg"
+      @click="handleBack"
+      :icon="LeftArrow"
+      iconSize="icon-md"
+    />
+    <Guide
+      class="keyword-guide title-16px"
+      :guide="ONBOARDING_SECOND_SECTION"
+    />
+    <KeywordSelector
+      class="onboarding-keyword"
+      :keywordGroupRef="keywordGroupRef"
+      :handleKeywordClick="handleKeywordClick"
+      :getIsSelected="getIsSelected"
+    />
+    <Button
+      :class="{ 'black md': isButtonActive, 'gray-10 md': !isButtonActive }"
       :disabled="!isButtonActive"
-      @click="handleClick"
+      @click="handleSubmitClick"
       class="onboarding-button"
       label="선택 완료"
     />
@@ -93,49 +73,62 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: calc(100 * var(--vh));
+    gap: calc(5 * var(--vh));
+    overflow-x: hidden;
   }
 
-  .character-card {
-    height: calc(10 * var(--vh));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 24px;
-    background: white;
-    border-radius: 40px;
-    border: solid 1px #ccc;
-    min-width: fit-content;
+  .keyword-guide {
+    position: fixed;
+    top: calc(15 * var(--vh));
+    padding: 12px 0;
   }
 
   .onboarding-button {
     position: fixed;
-    bottom: calc(8 * var(--vh));
-    left: 50%;
-    transform: translate(-50%, 50%);
+    bottom: calc(5 * var(--vh));
   }
-  .test {
-    background-color: black;
-    color: white;
+
+  .logo {
+    width: 40px;
+    height: 40px;
   }
+
   .keyword-section {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%;
+    padding-top: 30px;
   }
+
   .keyword-article-odd {
     display: flex;
     gap: 6px;
-    overflow: scroll;
-    padding: 2px 30px 2px 10px;
+    overflow-x: scroll;
+    padding: 2px 40px 2px 5px;
+    width: 100%;
   }
+
   .keyword-article-even {
     display: flex;
     gap: 6px;
-    overflow: scroll;
-    padding: 2px 10px 2px 30px;
-    position: relative;
+    overflow-x: scroll;
+    padding: 2px 5px 2px 40px;
     width: 100%;
+  }
+
+  .keyword-article-odd::-webkit-scrollbar,
+  .keyword-article-even::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+  }
+
+  .back-button {
+    position: absolute;
+    top: 6px;
+    left: 6px;
   }
 </style>

@@ -7,7 +7,6 @@
   const props = defineProps({
     content: Object,
   });
-
   const handleContentClick = () => {
     const { content } = props;
 
@@ -28,31 +27,32 @@
   <article @click="handleContentClick" class="content-card">
     <Image class="card-image" :src="props.content.image" />
     <div>
-      <p class="content-place label-11px">{{ props.content.place }}</p>
-      <p class="content-title title-16px">{{ props.content.title }}</p>
-      <p class="content-name label-11px">{{ props.content.name }}</p>
+      <p class="content-place label-11px">{{ props.content.location }}</p>
+      <p class="content-title body-14px">{{ props.content.title }}</p>
+      <p class="content-name label-11px">{{ props.content.artistName }}</p>
     </div>
-    <RightArrow class="arrow" />
+    <RightArrow class="arrow icon-md" />
   </article>
 </template>
 <style scoped>
   .content-card {
     width: 100%;
-    height: calc(15 * var(--vh));
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: center;
     background-color: var(--color-white);
-    padding: 10px;
+    padding: 8px;
     border-radius: 8px;
-    border: 1px solid #f3f3f3;
+    border: 1px solid var(--color-gray-10);
   }
 
   .card-image {
-    width: calc(13 * var(--vh));
-    height: calc(13 * var(--vh));
+    width: calc(8 * var(--vh));
+    height: calc(8 * var(--vh));
     padding: 2px 0;
+    border-radius: 3.5px;
   }
+
   .content-title {
     overflow-x: scroll;
     max-width: fit-content;
@@ -61,14 +61,15 @@
 
   .content-place {
     width: 100%;
-
     overflow-x: scroll;
     color: var(--color-gray-50);
   }
+
   .content-name {
     color: var(--color-gray-40);
     padding: 3px 0;
   }
+
   .arrow {
     margin-left: auto;
   }

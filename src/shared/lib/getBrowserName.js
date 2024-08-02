@@ -2,7 +2,6 @@ export const getBrowserName = () => {
   let browserName = '';
   const userAgent = navigator.userAgent.toLowerCase();
 
-  console.log(userAgent);
   if (userAgent.match(/edg/i)) {
     browserName = 'edge';
     return browserName;
@@ -11,7 +10,6 @@ export const getBrowserName = () => {
     browserName = 'kakao';
     return browserName;
   }
-
   if (userAgent.match(/NAVER/i)) {
     browserName = 'naver';
     return browserName;

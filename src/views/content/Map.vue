@@ -4,24 +4,28 @@
   import { useContentStore } from '../../app/store/useContentStore';
   import { useLanguageStore } from '../../app/store/useLanguageStore.js';
 
-  import useTouchDirection from '@/features/content/hooks/useTouchDirection';
-  import Map from '@/entities/content/components/Map.vue';
-  import ContentCard from '@/entities/content/components/ContentCard.vue';
-  import Button from '@/shared/components/Button.vue';
+  import Map from '../../entities/content/components/Map.vue';
+  import ContentCard from '../../entities/content/components/ContentCard.vue';
+  import BottomNavigation from '../../entities/content/components/BottomNavigation.vue';
+
+  import Button from '../../shared/components/Button.vue';
+  import useResizing from '../../shared/hooks/useResizing.js';
 
   const contentStore = useContentStore();
   const languageStore = useLanguageStore();
   const { contentList } = storeToRefs(contentStore);
-  const { language } = storeToRefs(languageStore);
   const { setLanguage } = languageStore;
-
-  const { handleTouchStart, handleTouchMove, handleTouchEnd, direction } =
-    useTouchDirection();
+  const {
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    isTouchRef,
+    newHeightRef,
+  } = useResizing();
 </script>
+
 <template>
   <main class="map-page">
-    <p>{{ direction }}</p>
-    <p>{{ language }}</p>
     <header class="header">
       <h1 class="header-title title-16px">지도</h1>
       <nav class="header-nav">
@@ -40,17 +44,17 @@
         'content-wrapper-down': direction === 'Down',
         'content-wrapper': direction === 'Mid',
       }"
+      :style="{ height: `${newHeightRef}px` }"
     >
       <div
+        class="content-container-header"
+        :class="isTouchRef && 'content-container-header-active'"
         @touchstart="handleTouchStart"
         @touchmove="handleTouchMove"
         @touchend="handleTouchEnd"
-        @click="handleClick"
-        class="content-container-header"
       >
         <div class="bar" />
       </div>
-
       <div class="content-container scroll">
         <ContentCard
           v-for="content in contentList"
@@ -63,6 +67,7 @@
     <BottomNavigation />
   </main>
 </template>
+
 <style scoped>
   .map-page {
     display: flex;
@@ -76,21 +81,16 @@
     top: 0;
     left: 0;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 6px 16px;
     z-index: 1;
-    gap: 6px;
   }
   .header-title {
-    height: calc(10 * var(--vh));
-    display: flex;
-    align-items: center;
+    padding: 15px 17px 16px 16px;
   }
 
   .header-nav {
     display: flex;
     gap: 4px;
+    padding-left: 16px;
   }
 
   .nav-item {
@@ -105,7 +105,6 @@
     gap: 10px;
     width: 100%;
     overflow-y: scroll;
-    transition: 0.5s all;
     padding: 0 10px;
     background-color: var(--color-white);
     z-index: 1;
@@ -121,7 +120,12 @@
     align-items: center;
     justify-content: center;
     background-color: var(--color-white);
+    transition: 0.5s background-color;
     z-index: 2;
+    touch-action: none;
+  }
+  .content-container-header-active {
+    background-color: var(--color-gray-20);
   }
   .bar {
     border-radius: 8px;
@@ -138,7 +142,6 @@
     height: calc(30 * var(--vh));
     left: 0;
     bottom: calc(10 * var(--vh));
-    transition: all 0.5s;
   }
   .content-wrapper-down {
     height: calc(8 * var(--vh));

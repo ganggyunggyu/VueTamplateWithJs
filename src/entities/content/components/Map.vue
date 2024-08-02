@@ -1,10 +1,6 @@
 <script setup>
-  import useMap from '../hooks/useMap';
-  import useWatchPosition from '../hooks/useWatchPosition';
-
-  const props = defineProps({
-    dir: String,
-  });
+  import useMap from '../../../shared/hooks/useMap.js';
+  import useWatchPosition from '../../../shared/hooks/useWatchPosition';
 
   const { watchSuccessCallback } = useMap();
 
@@ -17,15 +13,14 @@
   <div class="pos">
     <p>{{ posRef.latitude }}</p>
     <p>{{ posRef.longitude }}</p>
-    <p>{{ distanceRef }}미터</p>
+    <p>남은 거리 : {{ distanceRef }}M</p>
   </div>
   <div
     id="map"
     :style="{
       width: '100vw',
-      height:
-        props.dir === 'Down' ? 'calc(90 * var(--vh))' : 'calc(60 * var(--vh))',
     }"
+    style="z-index: 0"
   ></div>
 </template>
 

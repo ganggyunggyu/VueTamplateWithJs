@@ -1,46 +1,64 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
-  import Header from '@/entities/content/components/Header.vue';
-  import Guide from '@/entities/content/components/Guide.vue';
-  import ContentList from '@/features/content/components/ContentList.vue';
-  import BottomNavigation from '@/entities/content/components/BottomNavigation.vue';
-  import useGetConstant from '@/shared/hooks/useGetConstant';
-  import { CONTENT_KO, CONTENT_EN } from '@/assets/constants/content';
-  import { useContentStore } from '@/app/store/useContentStore';
+  import { ref } from 'vue';
   import { storeToRefs } from 'pinia';
 
+  import { useContentStore } from '../../app/store/useContentStore';
+  import ContentList from '../../features/content/components/ContentList.vue';
+
+  import Header from '../../entities/content/components/Header.vue';
+  import Guide from '../../entities/content/components/Guide.vue';
+  import BottomNavigation from '../../entities/content/components/BottomNavigation.vue';
+
+  import useKeyword from '../../shared/hooks/useKeyword';
+  import KeywordSelector from '../../shared/components/KeywordSelector.vue';
+  import Button from '../../shared/components/Button.vue';
+
   const store = useContentStore();
-  const { contentList } = storeToRefs(store);
+  const { keywordContentList } = storeToRefs(store);
 
-  console.log(contentList.value);
-  const dummy = [
-    {
-      id: 5,
-      image: 'https://via.placeholder.com/150',
-      place: 'Van Gogh Museum, Amsterdam',
-      title: 'Sunflowers',
-      name: 'Vincent van Gogh',
-    },
-    {
-      id: 6,
-      image: 'https://via.placeholder.com/150',
-      place: 'Museo del Prado, Madrid',
-      title: 'Las Meninas',
-      name: 'Diego Velázquez',
-    },
-  ];
+  const isKeywordSelector = ref(false);
 
-  const { data } = useGetConstant(CONTENT_KO, CONTENT_EN);
+  const {
+    setSelectedKeyword,
+    keywordGroupRef,
+    getIsSelected,
+    selectedKeyword,
+  } = useKeyword({
+    size: 6,
+  });
+
+  const toggleKeywordSelected = () => {
+    isKeywordSelector.value = !isKeywordSelector.value;
+  };
+
+  const handleKeywordClick = (id) => {
+    setSelectedKeyword(id);
+    toggleKeywordSelected();
+    //여기서 얻은 id로 관련 콘텐츠 불러오기
+  };
 </script>
 <template>
   <main class="chat-page">
     <Header />
     <div class="chat-container">
-      <p>{{ selectedKeyword }}</p>
       <Guide />
-      <ContentList :content-list="dummy" />
-      <ContentList :content-list="contentList" />
+      <ContentList :contentList="keywordContentList" />
     </div>
+    <TransitionGroup name="fade">
+      <KeywordSelector
+        class="chat-keyword"
+        v-if="isKeywordSelector"
+        :keywordGroupRef="keywordGroupRef"
+        :handleKeywordClick="handleKeywordClick"
+        :getIsSelected="getIsSelected"
+      />
+      <Button
+        @click="toggleKeywordSelected"
+        v-if="!isKeywordSelector"
+        class="submit-button black lg"
+        label="키워드 선택"
+      />
+    </TransitionGroup>
     <BottomNavigation />
   </main>
 </template>
@@ -74,14 +92,5 @@
   .submit-button {
     position: fixed;
     bottom: calc(12 * var(--vh));
-  }
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
   }
 </style>

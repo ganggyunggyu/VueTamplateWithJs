@@ -1,12 +1,13 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
-import { getDistance } from '@/shared/lib/getDistance';
-import { useLatLngStore } from '@/app/store/useLatLngStore.js';
+import { getDistance } from '../lib/getDistance.js';
+import { useLatLngStore } from '../../app/store/useLatLngStore.js';
+
 const useWatchPosition = ({ callback }) => {
   const latLngStore = useLatLngStore();
   const options = {
     enableHighAccuracy: true,
-    timeout: 10000,
+    timeout: 5000,
     maximumAge: 0,
   };
 
@@ -41,7 +42,7 @@ const useWatchPosition = ({ callback }) => {
         lng: posRef.value.longitude,
       });
     } else {
-      console.error('callback is undefined or null');
+      console.error('callback is undefined');
     }
 
     const latLng = latLngStore.getLatLng({ id: 1 });
@@ -59,27 +60,18 @@ const useWatchPosition = ({ callback }) => {
   };
 
   const onError = (error) => {
-    switch (error.code) {
-      case 1:
-        alert('위치 정보를 허용해주세요');
-        break;
-      case 2:
-        alert('사용할 수 없는 위치입니다.');
-        break;
-      case 3:
-        alert('타임아웃이 발생하였습니다 ');
-        break;
-      default:
-        alert('오류가 발생하였습니다.');
-    }
+    const errorMessages = {
+      1: '위치 정보를 허용해주세요',
+      2: '사용할 수 없는 위치입니다.',
+      3: '타임아웃이 발생하였습니다',
+      default: '오류가 발생하였습니다.',
+    };
+    alert(errorMessages[error.code] || errorMessages.default);
   };
+  
   const startWatchPosition = () => {
     if (!watchId.value) {
-      watchId.value = navigator.geolocation.watchPosition(
-        onSuccess,
-        onError,
-        options,
-      );
+      watchId.value = navigator.geolocation.watchPosition(onSuccess, onError, options);
     }
   };
 

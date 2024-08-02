@@ -8,25 +8,13 @@ export const getOsName = () => {
     osName = 'Windows Vista';
   } else if (userAgent.match(/Win(dows )?(NT 5\.1|XP)/)) {
     osName = 'Windows XP';
-  } else if (
-    userAgent.indexOf('Windows NT 7.0') != -1 ||
-    userAgent.indexOf('Windows NT 6.1') != -1
-  ) {
+  } else if (userAgent.indexOf('Windows NT 7.0') != -1 || userAgent.indexOf('Windows NT 6.1') != -1) {
     osName = 'Windows 7';
-  } else if (
-    userAgent.indexOf('Windows NT 8.0') != -1 ||
-    userAgent.indexOf('Windows NT 6.2') != -1
-  ) {
+  } else if (userAgent.indexOf('Windows NT 8.0') != -1 || userAgent.indexOf('Windows NT 6.2') != -1) {
     osName = 'Windows 8';
-  } else if (
-    userAgent.indexOf('Windows NT 8.1') != -1 ||
-    userAgent.indexOf('Windows NT 6.3') != -1
-  ) {
+  } else if (userAgent.indexOf('Windows NT 8.1') != -1 || userAgent.indexOf('Windows NT 6.3') != -1) {
     osName = 'Windows 8.1';
-  } else if (
-    userAgent.indexOf('Windows NT 10.0') != -1 ||
-    userAgent.indexOf('Windows NT 6.4') != -1
-  ) {
+  } else if (userAgent.indexOf('Windows NT 10.0') != -1 || userAgent.indexOf('Windows NT 6.4') != -1) {
     osName = 'Windows 10';
   } else if (userAgent.indexOf('iPad') != -1) {
     osName = 'iPad iOS ' + getIosVersion();
