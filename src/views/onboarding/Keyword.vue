@@ -6,6 +6,7 @@
   import KeywordSelector from '../../shared/components/KeywordSelector.vue';
   import Button from '../../shared/components/Button.vue';
   import LeftArrow from '../../shared/icons/LeftArrow.vue';
+  import useCharacterStore from '@/app/store/useCharacterStore';
 
   const router = useRouter();
   const ONBOARDING_SECOND_SECTION = ['관심있는 분야를', '3가지 선택해주세요.'];
@@ -17,7 +18,7 @@
   } = useKeyword({
     size: 4,
   });
-
+  useCharacterStore();
   const isButtonActive = computed(() => selectedKeywordList.value.length === 3);
   //기획에 따라 수정 필요
 

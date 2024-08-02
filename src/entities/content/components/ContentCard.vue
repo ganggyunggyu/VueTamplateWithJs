@@ -7,9 +7,8 @@
   const props = defineProps({
     content: Object,
   });
+  const { content } = props;
   const handleContentClick = () => {
-    const { content } = props;
-
     if (!content) {
       alert('콘텐츠가 없습니다.');
       return;

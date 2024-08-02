@@ -9,7 +9,7 @@
   import BottomNavigation from '../../entities/content/components/BottomNavigation.vue';
 
   import Button from '../../shared/components/Button.vue';
-  import useResizing from '../../shared/hooks/useResizing.js';
+  import useResizing from '@/shared/hooks/useResizing';
 
   const contentStore = useContentStore();
   const languageStore = useLanguageStore();
@@ -35,17 +35,9 @@
         <button @click="setLanguage">반응형 데이터 테스트 버튼</button>
       </nav>
     </header>
-    <Map :dir="direction" />
+    <Map />
 
-    <section
-      class="content-wrapper"
-      :class="{
-        'content-wrapper-active': direction === 'Up',
-        'content-wrapper-down': direction === 'Down',
-        'content-wrapper': direction === 'Mid',
-      }"
-      :style="{ height: `${newHeightRef}px` }"
-    >
+    <section class="content-wrapper" :style="{ height: `${newHeightRef}px` }">
       <div
         class="content-container-header"
         :class="isTouchRef && 'content-container-header-active'"

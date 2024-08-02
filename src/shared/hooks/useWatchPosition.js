@@ -68,10 +68,14 @@ const useWatchPosition = ({ callback }) => {
     };
     alert(errorMessages[error.code] || errorMessages.default);
   };
-  
+
   const startWatchPosition = () => {
     if (!watchId.value) {
-      watchId.value = navigator.geolocation.watchPosition(onSuccess, onError, options);
+      watchId.value = navigator.geolocation.watchPosition(
+        onSuccess,
+        onError,
+        options,
+      );
     }
   };
 

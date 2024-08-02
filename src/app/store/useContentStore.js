@@ -6,11 +6,11 @@ import { CONTENT_EN, CONTENT_KO } from '@/assets/constants/test2';
 export const useContentStore = defineStore('content', () => {
   const languageStore = useLanguageStore();
   const { language } = storeToRefs(languageStore);
-  const selectedKeywordList = ref(
-    JSON.parse(localStorage.getItem('selectedKeywords')) || [],
-  );
   const contentList = ref(
     language.value === 'ko' ? CONTENT_KO.dataList : CONTENT_EN.dataList,
+  );
+  const selectedKeywordList = ref(
+    JSON.parse(localStorage.getItem('selectedKeywords')) || [],
   );
   const keywordContentList = ref([]);
 

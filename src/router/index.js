@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Landing from '@/views/ready/Landing.vue';
+import Entry from '@/views/ready/Entry.vue';
 import Language from '@/views/ready/Language.vue';
 import Welcome from '@/views/ready/Welcome.vue';
 import Name from '@/views/onboarding/Name.vue';
@@ -13,7 +13,7 @@ import Keyword from '@/views/onboarding/Keyword.vue';
 
 export const routes = [
   /** ready */
-  { path: '/', component: Landing, name: 'Landing' },
+  { path: '/', component: Entry, name: 'Entry' },
   { path: '/language', component: Language, name: 'Language' },
   { path: '/welcome', component: Welcome, name: 'Welcome' },
   /** onboarding */

@@ -19,6 +19,7 @@
     id="map"
     :style="{
       width: '100vw',
+      height: 'calc(60 * var(--vh))',
     }"
     style="z-index: 0"
   ></div>

@@ -1,7 +1,7 @@
 <script setup>
   import { ref } from 'vue';
-  import Button from '../../../shared/components/Button.vue';
   import { useRouter } from 'vue-router';
+  import Button from '../../../shared/components/Button.vue';
   import SettingIcon from '../../../shared/icons/SettingIcon.vue';
   import MapIcon from '../../../shared/icons/MapIcon.vue';
   import ChatIcon from '@/shared/icons/ChatIcon.vue';
@@ -22,21 +22,36 @@
 <template>
   <nav class="bottom-navigation">
     <Button
-      :class="tabRef === 'Setting' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
+      class="button"
+      :class="
+        tabRef === 'Setting'
+          ? 'bottom-navigation-button-active'
+          : 'bottom-navigation-button'
+      "
       @click="handleSettingClick"
       label="설정"
       :icon="SettingIcon"
       iconSize="icon-md"
     />
     <Button
-      :class="tabRef === 'Map' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
+      class="button"
+      :class="
+        tabRef === 'Map'
+          ? 'bottom-navigation-button-active'
+          : 'bottom-navigation-button'
+      "
       @click="handleMapClick"
       label="지도"
       :icon="MapIcon"
       iconSize="icon-md"
     />
     <Button
-      :class="tabRef === 'Chat' ? 'bottom-navigation-button-active' : 'bottom-navigation-button'"
+      class="button"
+      :class="
+        tabRef === 'Chat'
+          ? 'bottom-navigation-button-active'
+          : 'bottom-navigation-button'
+      "
       @click="handleChatClick"
       label="채팅"
       :icon="ChatIcon"
