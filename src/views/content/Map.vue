@@ -1,4 +1,5 @@
 <script setup>
+  import { onMounted, ref } from 'vue';
   import { storeToRefs } from 'pinia';
 
   import { useContentStore } from '../../app/store/useContentStore';
@@ -13,8 +14,8 @@
 
   const contentStore = useContentStore();
   const languageStore = useLanguageStore();
-  const { contentList } = storeToRefs(contentStore);
-  const { setLanguage } = languageStore;
+  const { setFloorContentList } = contentStore;
+  const { contentListRef } = storeToRefs(contentStore);
   const {
     handleTouchStart,
     handleTouchMove,
@@ -22,6 +23,22 @@
     isTouchRef,
     newHeightRef,
   } = useResizing();
+
+  const displayContentList = ref([]);
+
+  const handleContentListClick = ({ floor }) => {
+    const contentList = setFloorContentList({ floor: floor });
+    displayContentList.value = [...contentList];
+  };
+
+  const handleAllContentClick = () => {
+    const contentList = [...contentListRef.value];
+    displayContentList.value = [...contentList];
+  };
+
+  onMounted(() => {
+    displayContentList.value = [...contentListRef.value];
+  });
 </script>
 
 <template>
@@ -29,10 +46,22 @@
     <header class="header">
       <h1 class="header-title title-16px">지도</h1>
       <nav class="header-nav">
-        <Button class="nav-item" label="1층" />
-        <Button class="nav-item" label="2층" />
-        <Button class="nav-item" label="3층" />
-        <button @click="setLanguage">반응형 데이터 테스트 버튼</button>
+        <Button @click="handleAllContentClick" class="nav-item" label="전체" />
+        <Button
+          @click="handleContentListClick({ floor: 1 })"
+          class="nav-item"
+          label="1층"
+        />
+        <Button
+          @click="handleContentListClick({ floor: 2 })"
+          class="nav-item"
+          label="2층"
+        />
+        <Button
+          @click="handleContentListClick({ floor: 3 })"
+          class="nav-item"
+          label="3층"
+        />
       </nav>
     </header>
     <Map />
@@ -49,7 +78,7 @@
       </div>
       <div class="content-container scroll">
         <ContentCard
-          v-for="content in contentList"
+          v-for="content in displayContentList"
           :key="content.id"
           :content="content"
         />

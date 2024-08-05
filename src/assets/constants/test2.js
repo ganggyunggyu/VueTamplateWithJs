@@ -150,7 +150,7 @@ export const CONTENT_KO = {
       artistName: '벤디마켄 벨레테',
       artistIntroduction: '대충 번역한 내용',
       image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
-      keywordIds: [4, 8, 16],
+      keywordIds: [4, 8, 1],
       floorLevel: 3,
     },
   ],

@@ -1,7 +1,7 @@
-import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
-import { useLanguageStore } from './useLanguageStore';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { useLanguageStore } from './useLanguageStore';
+import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
 
 const useCharacterStore = () => {
   const languageStore = useLanguageStore();
@@ -10,6 +10,15 @@ const useCharacterStore = () => {
     language.value === 'ko' ? CHARACTER_KO.dataList : CHARACTER_EN.dataList,
   );
 
+  console.log(characterListRef.value);
+
+  watch(
+    () => language.value,
+    (newLang) => {
+      characterListRef.value =
+        newLang === 'ko' ? CHARACTER_KO.dataList : CHARACTER_EN.dataList;
+    },
+  );
   return {
     characterListRef,
   };

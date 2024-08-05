@@ -1,5 +1,5 @@
 <script setup>
-  import { ref } from 'vue';
+  import { ref, watch, nextTick } from 'vue';
   import { storeToRefs } from 'pinia';
 
   import { useContentStore } from '../../app/store/useContentStore';
@@ -14,46 +14,71 @@
   import Button from '../../shared/components/Button.vue';
 
   const store = useContentStore();
-  const { keywordContentList } = storeToRefs(store);
+  const { keywordsContentList } = storeToRefs(store);
+  const { setKeywordContentList } = store;
+
+  const chatRefList = ref([]);
 
   const isKeywordSelector = ref(false);
 
-  const {
-    setSelectedKeyword,
-    keywordGroupRef,
-    getIsSelected,
-    selectedKeyword,
-  } = useKeyword({
+  const { setSelectedKeyword, keywordGroupRef, getIsSelected } = useKeyword({
     size: 6,
   });
 
-  const toggleKeywordSelected = () => {
-    isKeywordSelector.value = !isKeywordSelector.value;
+  const closeKeywordSelector = () => {
+    isKeywordSelector.value = false;
   };
-
+  const openKeywordSelector = () => {
+    isKeywordSelector.value = true;
+  };
   const handleKeywordClick = (id) => {
     setSelectedKeyword(id);
-    toggleKeywordSelected();
-    //여기서 얻은 id로 관련 콘텐츠 불러오기
+    const newChat = {
+      contentList: setKeywordContentList({ keywordId: id }),
+      guideList: ['알랄ㄹ랄랄', '알랄ㄹ랄랄', '알랄ㄹ랄랄'],
+    };
+    closeKeywordSelector();
+
+    const copyChetList = [...chatRefList.value];
+    copyChetList.push(newChat);
+
+    chatRefList.value = [...copyChetList];
+    console.log(chatRefList.value);
   };
+
+  watch(chatRefList, async () => {
+    await nextTick();
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  });
 </script>
 <template>
   <main class="chat-page">
     <Header />
     <div class="chat-container">
-      <Guide />
-      <ContentList :contentList="keywordContentList" />
+      <Guide :guide-list="['최초 가이드', '입니다.']" />
+      <ContentList :contentList="keywordsContentList" />
+      <ContentList
+        v-for="chat of chatRefList"
+        :contentList="chat.contentList"
+        :guide-list="chat.guideList"
+      />
     </div>
     <TransitionGroup name="fade">
-      <KeywordSelector
-        class="chat-keyword"
+      <div
+        @click="closeKeywordSelector"
+        class="keyword-selector-background"
         v-if="isKeywordSelector"
-        :keywordGroupRef="keywordGroupRef"
-        :handleKeywordClick="handleKeywordClick"
-        :getIsSelected="getIsSelected"
-      />
+      >
+        <KeywordSelector
+          class="chat-keyword"
+          :keywordGroupRef="keywordGroupRef"
+          :handleKeywordClick="handleKeywordClick"
+          :getIsSelected="getIsSelected"
+        />
+      </div>
       <Button
-        @click="toggleKeywordSelected"
+        @click="openKeywordSelector"
         v-if="!isKeywordSelector"
         class="submit-button black lg"
         label="키워드 선택"
@@ -82,6 +107,13 @@
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+  }
+  .keyword-selector-background {
+    position: fixed;
+    width: 100vw;
+    height: calc(100 * var(--vh));
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 8;
   }
   .chat-keyword {
     position: fixed;

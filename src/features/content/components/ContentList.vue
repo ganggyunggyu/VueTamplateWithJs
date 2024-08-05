@@ -1,10 +1,13 @@
 <script setup>
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, nextTick, onMounted, ref, watch } from 'vue';
   import ContentCard from '@/entities/content/components/ContentCard.vue';
+
   import Button from '@/shared/components/Button.vue';
+  import Guide from '@/entities/content/components/Guide.vue';
 
   const props = defineProps({
     contentList: Array,
+    guideList: Array,
   });
 
   const displayedContentList = ref([]);
@@ -16,6 +19,11 @@
     displayedContentList.value = [...props.contentList];
   };
 
+  const scrollToBottom = () => {
+    const chatContainer = document.querySelector('.chat-container');
+    chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   onMounted(() => {
     if (props.contentList.length < 4) {
       displayedContentList.value = [...props.contentList];
@@ -23,8 +31,14 @@
       displayedContentList.value = props.contentList.slice(0, 3);
     }
   });
+
+  watch(displayedContentList, async () => {
+    await nextTick();
+    scrollToBottom();
+  });
 </script>
 <template>
+  <Guide v-if="props.guideList" :guide-list="props.guideList" />
   <section class="content-list-container">
     <ContentCard
       v-for="content in displayedContentList"

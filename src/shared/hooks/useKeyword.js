@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
 import useGetConstant from './useGetConstant';
+import { useContentStore } from '@/app/store/useContentStore';
 
 const useKeyword = ({ size }) => {
   /**
@@ -8,6 +9,7 @@ const useKeyword = ({ size }) => {
    */
   const SIZE = size || 4;
 
+  const store = useContentStore();
   const { data } = useGetConstant(CHARACTER_KO, CHARACTER_EN);
 
   const keywordGroupRef = ref([]);
@@ -23,7 +25,9 @@ const useKeyword = ({ size }) => {
 
   const addSelectedKeywordList = (id) => {
     if (selectedKeywordList.value.includes(id)) {
-      selectedKeywordList.value = selectedKeywordList.value.filter((keyword) => keyword !== id);
+      selectedKeywordList.value = selectedKeywordList.value.filter(
+        (keyword) => keyword !== id,
+      );
     } else if (selectedKeywordList.value.length < 3) {
       selectedKeywordList.value.push(id);
     }
