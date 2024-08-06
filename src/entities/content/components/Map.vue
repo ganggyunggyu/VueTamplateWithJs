@@ -2,7 +2,7 @@
   import useMap from '../../../shared/hooks/useMap.js';
   import useWatchPosition from '../../../shared/hooks/useWatchPosition';
 
-  const { watchSuccessCallback } = useMap();
+  const { mapRef, watchSuccessCallback } = useMap();
 
   const { posRef, distanceRef } = useWatchPosition({
     callback: watchSuccessCallback,
@@ -16,6 +16,7 @@
     <p>남은 거리 : {{ distanceRef }}M</p>
   </div>
   <div
+    :ref="mapRef"
     id="map"
     :style="{
       width: '100vw',

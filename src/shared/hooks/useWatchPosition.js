@@ -5,11 +5,6 @@ import { useLatLngStore } from '../../app/store/useLatLngStore.js';
 
 const useWatchPosition = ({ callback }) => {
   const latLngStore = useLatLngStore();
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
 
   const posRef = ref({
     accuracy: null,
@@ -22,6 +17,12 @@ const useWatchPosition = ({ callback }) => {
   });
   const watchId = ref(null);
   const distanceRef = ref(null);
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
 
   const onSuccess = (result) => {
     const pos = result.coords;

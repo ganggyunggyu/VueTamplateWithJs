@@ -12,7 +12,7 @@ const headphoneIcon = `
     </svg>
 `;
 
-export const userMapMarker = () => {
+export const userMarker = () => {
   const mobileContentArray = `
     <div class="user-marker-container">
       <span class="user-marker " />
@@ -21,7 +21,7 @@ export const userMapMarker = () => {
   return mobileContentArray;
 };
 
-export const contentMapMarker = () => {
+export const selectedContentMarker = () => {
   const mobileContentArray = `
 <div class="content-marker-container">
   <svg

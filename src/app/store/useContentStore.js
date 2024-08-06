@@ -16,8 +16,6 @@ export const useContentStore = defineStore('content', () => {
   const keywordsContentList = ref([]);
   const keywordContentList = ref([]);
 
-  const floorContentList = ref([]);
-
   const setKeywordsContentList = ({ keywordIdList }) => {
     if (!keywordIdList.value) return null;
     for (const content of contentListRef.value) {
@@ -50,7 +48,6 @@ export const useContentStore = defineStore('content', () => {
     const selectedContent = contentListRef.value.filter(
       (content) => content.floorLevel === floor,
     );
-    console.log(floor, selectedContent);
     return selectedContent;
   };
 

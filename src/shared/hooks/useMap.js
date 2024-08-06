@@ -1,20 +1,16 @@
 import { ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
-import { useLatLngStore } from '../../app/store/useLatLngStore';
-import {
-  userMapMarker,
-  contentMapMarker,
-  defaultContentMarker,
-} from '../lib/createMarker';
+import { userMarker, defaultContentMarker } from '../lib/createMarker';
+import { useContentStore } from '@/app/store/useContentStore';
 
 const { naver } = window;
 
 const useMap = () => {
-  const latLngStore = useLatLngStore();
+  const contentStore = useContentStore();
 
   const mapRef = ref(null);
   const markerRef = ref(null);
-  const markerListRef = ref([]);
+  const markerListRef = ref(null);
 
   const createMap = ({ lat, lng }) => {
     const option = {
@@ -35,7 +31,7 @@ const useMap = () => {
       map: mapRef.value,
       icon: {
         title: 'userPosition',
-        content: userMapMarker({ title: 'userPosition' }),
+        content: userMarker({ title: 'userPosition' }),
 
         size: new naver.maps.Size(38, 58),
 
@@ -43,8 +39,23 @@ const useMap = () => {
       },
     });
   };
-  const createContentMarker = ({ latLngList }) => {
-    latLngList.forEach(({ lat, lng }) => {
+  const deleteContentMarker = ({ markerList }) => {
+    for (const marker of markerList) {
+      marker.setMap(null);
+    }
+    markerList = null;
+  };
+
+  const createContentMarker = ({ contentList }) => {
+    if (markerListRef.value) {
+      deleteContentMarker({ markerList: markerListRef.value });
+    }
+    const markerList = [];
+
+    for (const content of contentList) {
+      if (!content.latLng) break;
+      console.log(content);
+      const { lat, lng } = content.latLng;
       const position = new naver.maps.LatLng(lat, lng);
       const marker = new naver.maps.Marker({
         position: position,
@@ -52,14 +63,13 @@ const useMap = () => {
         icon: {
           title: 'userPosition',
           content: defaultContentMarker({ contentType: 'docent' }),
-
           size: new naver.maps.Size(38, 58),
-
           anchor: new naver.maps.Point(19, 58),
         },
       });
-      markerListRef.value = [...markerListRef.value, marker];
-    });
+      markerList.push(marker);
+    }
+    markerListRef.value = [...markerList];
   };
 
   const updateMarker = ({ lat, lng }) => {
@@ -68,10 +78,9 @@ const useMap = () => {
   };
 
   const Initialization = ({ lat, lng }) => {
-    const latLngList = latLngStore.getLatLngList();
     if (!mapRef.value) createMap({ lat, lng });
     if (!markerRef.value) createMarker({ lat, lng });
-    createContentMarker({ latLngList: latLngList });
+    createContentMarker({ contentList: contentStore.contentListRef });
   };
 
   const watchSuccessCallback = ({ lat, lng }) => {
@@ -82,10 +91,10 @@ const useMap = () => {
   onBeforeRouteLeave(() => {
     mapRef.value = null;
     markerRef.value = null;
-    markerListRef.value = [];
+    markerListRef.value = null;
   });
 
-  return { mapRef, watchSuccessCallback };
+  return { mapRef, watchSuccessCallback, createContentMarker };
 };
 
 export default useMap;

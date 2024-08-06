@@ -50,6 +50,7 @@ export const CONTENT_KO = {
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 7, 16],
       floorLevel: 2,
+      latLng: { lat: 37.2937779, lng: 127.0495892 },
     },
     {
       id: 4,
@@ -63,9 +64,10 @@ export const CONTENT_KO = {
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
       image:
-        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
+        'https://lh5.googleusercontent.com/p/AF1QipM6cEYYJinGW95JhNyiBdTd98Iagqh-lEXtIYJZ=w426-h240-k-no',
       keywordIds: [1, 4, 7],
       floorLevel: 1,
+      latLng: { lat: 37.2937501, lng: 127.0493446 },
     },
     {
       id: 5,
@@ -221,6 +223,7 @@ export const CONTENT_EN = {
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 7, 16],
       floorLevel: 2,
+      latLng: { lat: 37.2937779, lng: 127.0495892 },
     },
     {
       id: 4,
@@ -235,9 +238,10 @@ export const CONTENT_EN = {
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
       image:
-        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
+        'https://lh5.googleusercontent.com/p/AF1QipM6cEYYJinGW95JhNyiBdTd98Iagqh-lEXtIYJZ=w426-h240-k-no',
       keywordIds: [1, 4, 7],
       floorLevel: 1,
+      latLng: { lat: 37.2937501, lng: 127.0493446 },
     },
     {
       id: 5,
