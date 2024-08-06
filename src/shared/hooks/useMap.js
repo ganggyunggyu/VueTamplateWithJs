@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useLatLngStore } from '../../app/store/useLatLngStore';
+import { userMapMarker, contentMapMarker } from '../lib/createMarker';
 
 const { naver } = window;
 
@@ -28,6 +29,14 @@ const useMap = () => {
     markerRef.value = new naver.maps.Marker({
       position: position,
       map: mapRef.value,
+      icon: {
+        title: 'userPosition',
+        content: userMapMarker({ title: 'userPosition' }),
+
+        size: new naver.maps.Size(38, 58),
+
+        anchor: new naver.maps.Point(19, 58),
+      },
     });
   };
   const createContentMarker = ({ latLngList }) => {
@@ -36,6 +45,14 @@ const useMap = () => {
       const marker = new naver.maps.Marker({
         position: position,
         map: mapRef.value,
+        icon: {
+          title: 'userPosition',
+          content: contentMapMarker(),
+
+          size: new naver.maps.Size(38, 58),
+
+          anchor: new naver.maps.Point(19, 58),
+        },
       });
       markerListRef.value = [...markerListRef.value, marker];
     });

@@ -12,7 +12,8 @@ export const CONTENT_KO = {
       title: '오주 2.0',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 3, 5],
       floorLevel: 1,
       latLng: { lat: 37.2939662, lng: 127.0493934 },
@@ -28,7 +29,8 @@ export const CONTENT_KO = {
       title: '여기에는 더 이상 자리가 없어요',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 7, 10],
       floorLevel: 2,
       latLng: { lat: 37.294017, lng: 127.049517 },
@@ -44,7 +46,8 @@ export const CONTENT_KO = {
       title: '타이틀즈',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 7, 16],
       floorLevel: 2,
     },
@@ -59,7 +62,8 @@ export const CONTENT_KO = {
       title: '맹인을 인도하는 맹인',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 4, 7],
       floorLevel: 1,
     },
@@ -74,7 +78,8 @@ export const CONTENT_KO = {
       title: '제목 없음',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 6, 12],
       floorLevel: 3,
     },
@@ -89,7 +94,8 @@ export const CONTENT_KO = {
       title: '제목 없음',
       artistName: '최하늘',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [5, 9, 13],
       floorLevel: 3,
     },
@@ -104,7 +110,8 @@ export const CONTENT_KO = {
       title: '수궁가 (Hello)',
       artistName: '나 미라',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [8, 11, 14],
       floorLevel: 2,
     },
@@ -119,7 +126,8 @@ export const CONTENT_KO = {
       title: '제목 없음',
       artistName: '데이비드 누난',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [3, 7, 15],
       floorLevel: 2,
     },
@@ -134,7 +142,8 @@ export const CONTENT_KO = {
       title: '제목 없음',
       artistName: '아몰 K 파틸',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 6, 10],
       floorLevel: 1,
     },
@@ -149,7 +158,8 @@ export const CONTENT_KO = {
       title: '베일을 벗기다',
       artistName: '벤디마켄 벨레테',
       artistIntroduction: '대충 번역한 내용',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 8, 1],
       floorLevel: 3,
     },
@@ -171,7 +181,8 @@ export const CONTENT_EN = {
       artistName: 'Emeka Ogboh',
       artistIntroduction:
         'Born 1977, Enugu, Nigeria\nLives and works between Berlin, Germany and Lagos, Nigeria.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 3, 5],
       floorLevel: 1,
       latLng: { lat: 37.2939662, lng: 127.0493934 },
@@ -188,7 +199,8 @@ export const CONTENT_EN = {
       artistName: 'Cinthia Marcelle',
       artistIntroduction:
         'Born 1974, Belo Horizonte, Brazil\nLives and works in São Paulo, Brazil.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 7, 10],
       floorLevel: 2,
       latLng: { lat: 37.294017, lng: 127.049517 },
@@ -205,7 +217,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 7, 16],
       floorLevel: 2,
     },
@@ -221,7 +234,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 4, 7],
       floorLevel: 1,
     },
@@ -237,7 +251,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 6, 12],
       floorLevel: 3,
     },
@@ -253,7 +268,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [5, 9, 13],
       floorLevel: 3,
     },
@@ -269,7 +285,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [8, 11, 14],
       floorLevel: 2,
     },
@@ -285,7 +302,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [3, 7, 15],
       floorLevel: 2,
     },
@@ -301,7 +319,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 6, 10],
       floorLevel: 1,
     },
@@ -317,7 +336,8 @@ export const CONTENT_EN = {
       artistName: 'Kandis Williams',
       artistIntroduction:
         'Born 1985, Baltimore, U.S.A.\nLives and works in Los Angeles, U.S.A.',
-      image: 'https://i.ytimg.com/vi/oaHkmbueWVc/maxresdefault.jpg',
+      image:
+        'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 8, 16],
       floorLevel: 3,
     },

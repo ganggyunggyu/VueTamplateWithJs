@@ -40,6 +40,7 @@ const useWatchPosition = ({ callback }) => {
       callback({
         lat: posRef.value.latitude,
         lng: posRef.value.longitude,
+        heading: posRef.value.heading,
       });
     } else {
       console.error('callback is undefined');

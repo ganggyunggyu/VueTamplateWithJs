@@ -3,7 +3,6 @@
   import { storeToRefs } from 'pinia';
 
   import { useContentStore } from '../../app/store/useContentStore';
-  import { useLanguageStore } from '../../app/store/useLanguageStore.js';
 
   import Map from '../../entities/content/components/Map.vue';
   import ContentCard from '../../entities/content/components/ContentCard.vue';
@@ -11,9 +10,9 @@
 
   import Button from '../../shared/components/Button.vue';
   import useResizing from '@/shared/hooks/useResizing';
+  import CrosshairIcon from '@/shared/icons/CrosshairIcon.vue';
 
   const contentStore = useContentStore();
-  const languageStore = useLanguageStore();
   const { setFloorContentList } = contentStore;
   const { contentListRef } = storeToRefs(contentStore);
   const {
@@ -36,8 +35,46 @@
     displayContentList.value = [...contentList];
   };
 
+  const headingRef = ref(null);
+
+  const success = (result) => {
+    const heading = result.coords.heading;
+    const arrow = document.querySelector('.arrow');
+    const direction = document.querySelector('.direction');
+    headingRef.value = heading;
+
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener(
+        'deviceorientation',
+        (event) => {
+          const alpha = event.alpha;
+          const heading = headingRef.value;
+
+          if (heading !== null) {
+            const correctedAlpha = (alpha - heading) % 360;
+            arrow.style.transform = `rotate(${-correctedAlpha}deg)`;
+            direction.textContent = `${Math.round(alpha)}°`;
+          } else {
+            arrow.style.transform = `rotate(${alpha}deg)`;
+            direction.textContent = `${Math.round(alpha)}°`;
+          }
+        },
+        true,
+      );
+    } else {
+      alert('Device Orientation API not supported on this device.');
+    }
+  };
+  const error = (error) => {
+    alert(error);
+  };
+
   onMounted(() => {
     displayContentList.value = [...contentListRef.value];
+
+    navigator.geolocation.getCurrentPosition(success, error, {
+      enableHighAccuracy: true,
+    });
   });
 </script>
 
@@ -45,6 +82,7 @@
   <main class="map-page">
     <header class="header">
       <h1 class="header-title title-16px">지도</h1>
+      <p>{{ headingRef }}</p>
       <nav class="header-nav">
         <Button @click="handleAllContentClick" class="nav-item" label="전체" />
         <Button
@@ -64,6 +102,7 @@
         />
       </nav>
     </header>
+
     <Map />
 
     <section class="content-wrapper" :style="{ height: `${newHeightRef}px` }">
@@ -84,6 +123,11 @@
         />
       </div>
     </section>
+    <Button
+      class="cross-hair button"
+      :icon="CrosshairIcon"
+      icon-size="icon-md"
+    />
 
     <BottomNavigation />
   </main>
@@ -169,5 +213,15 @@
   }
   .content-wrapper-active {
     height: calc(70 * var(--vh));
+  }
+  .cross-hair {
+    z-index: 999;
+    position: fixed;
+    right: 20px;
+    bottom: calc(45 * var(--vh));
+    width: 40px;
+    height: 40px;
+    background-color: var(--color-white);
+    border-radius: 50%;
   }
 </style>

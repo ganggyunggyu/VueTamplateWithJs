@@ -37,3 +37,38 @@
   width: 40px;
   height: 40px;
 }
+
+.user-marker-container {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  animation: ping-animation 1.5s infinite;
+  background-color: var(--color-gray-20);
+}
+.user-marker {
+  width: 16px;
+  height: 16px;
+  background-color: #5a71ec;
+  border-radius: 50%;
+}
+.content-marker-container {
+  position: relative;
+  width: 47px;
+  height: 52px;
+  background-color: none;
+}
+.content-marker {
+  width: 100%;
+  height: 100%;
+}
+.content-marker-image {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 7px;
+  top: 7px;
+  border-radius: 7px;
+}
