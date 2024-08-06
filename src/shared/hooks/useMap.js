@@ -20,7 +20,7 @@ const useMap = () => {
     const option = {
       center: new naver.maps.LatLng(lat, lng),
       zoom: 20,
-      zoomControl: true,
+      zoomControl: false,
       zoomControlOptions: {
         position: naver.maps.Position.TOP_RIGHT,
       },
