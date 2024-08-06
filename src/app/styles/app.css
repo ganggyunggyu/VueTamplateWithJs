@@ -72,3 +72,19 @@
   top: 7px;
   border-radius: 7px;
 }
+.default-content-marker-container {
+  position: relative;
+  width: 60px;
+  height: 65px;
+}
+.default-content-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.default-content-marker-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-53%, -80%);
+}
