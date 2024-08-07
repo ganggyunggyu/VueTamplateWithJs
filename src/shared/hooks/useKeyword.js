@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 import { CHARACTER_EN, CHARACTER_KO } from '@/assets/constants/character';
 import useGetConstant from './useGetConstant';
-import { useContentStore } from '@/app/store/useContentStore';
 
 const useKeyword = ({ size }) => {
   /**
@@ -9,7 +8,6 @@ const useKeyword = ({ size }) => {
    */
   const SIZE = size || 4;
 
-  const store = useContentStore();
   const { data } = useGetConstant(CHARACTER_KO, CHARACTER_EN);
 
   const keywordGroupRef = ref([]);

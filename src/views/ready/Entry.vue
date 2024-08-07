@@ -5,6 +5,7 @@
 
   const router = useRouter();
   const timerRef = ref(null);
+  const isLoadingRef = ref(true);
 
   onMounted(() => {
     timerRef.value = setTimeout(() => {
@@ -17,5 +18,5 @@
   });
 </script>
 <template>
-  <Loading />
+  <Loading v-if="isLoadingRef" />
 </template>

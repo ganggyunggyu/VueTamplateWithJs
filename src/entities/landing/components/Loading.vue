@@ -1,16 +1,7 @@
 <script setup>
   import Progress from '@/shared/components/Progress.vue';
   import Image from '@/shared/components/Image.vue';
-  import { onMounted, ref } from 'vue';
-  import router from '@/router';
   import { BACKGROUND, LOGO } from '@/assets/constants/image';
-  const timerRef = ref(null);
-
-  onMounted(() => {
-    timerRef.value = setTimeout(() => {
-      router.push('language');
-    }, 3000);
-  });
 </script>
 <template>
   <main class="loading-page">
@@ -20,16 +11,18 @@
 </template>
 <style scoped>
   .loading-page {
+    position: fixed;
+    width: 100%;
+    height: calc(100 * var(--vh));
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 100%;
     gap: 10px;
-    height: calc(100 * var(--vh));
+    z-index: 999;
+    background-color: white;
   }
   .background-image {
-    position: fixed;
     width: 100%;
     height: calc(100 * var(--vh));
     z-index: -1;

@@ -1,5 +1,5 @@
 <script setup>
-  import { computed } from 'vue';
+  import { computed, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import Guide from '../../entities/onboarding/components/Guide.vue';
   import useKeyword from '../../shared/hooks/useKeyword';
@@ -7,6 +7,10 @@
   import Button from '../../shared/components/Button.vue';
   import LeftArrow from '../../shared/icons/LeftArrow.vue';
   import useCharacterStore from '@/app/store/useCharacterStore';
+  import Loading from '@/entities/landing/components/Loading.vue';
+
+  const timerRef = ref(null);
+  const isLoading = ref(false);
 
   const router = useRouter();
   const ONBOARDING_SECOND_SECTION = ['관심있는 분야를', '3가지 선택해주세요.'];
@@ -22,6 +26,18 @@
   const isButtonActive = computed(() => selectedKeywordList.value.length === 3);
   //기획에 따라 수정 필요
 
+  // const handleSubmitClick = () => {
+  //   if (selectedKeywordList.value.length === 3) {
+  //     localStorage.setItem(
+  //       'selectedKeywordList',
+  //       JSON.stringify(selectedKeywordList.value),
+  //     );
+  //     isLoading.value = true;
+  //     timerRef.value = setTimeout(() => {
+  //       router.push('/content-chat');
+  //     }, 3000);
+  //   }
+  // };
   const handleSubmitClick = () => {
     if (selectedKeywordList.value.length === 3) {
       localStorage.setItem(
@@ -43,12 +59,14 @@
 
 <template>
   <main class="onboarding-page">
-    <Button
-      class="back-button icon-lg"
-      @click="handleBack"
-      :icon="LeftArrow"
-      iconSize="icon-md"
-    />
+    <header class="keyword-header">
+      <Button
+        class="back-button icon-lg"
+        @click="handleBack"
+        :icon="LeftArrow"
+        iconSize="icon-md"
+      />
+    </header>
     <Guide
       class="keyword-guide title-16px"
       :guide="ONBOARDING_SECOND_SECTION"
@@ -70,21 +88,20 @@
 </template>
 
 <style scoped>
+  .keyword-header {
+    width: 100%;
+    height: 40px;
+    padding: 6px;
+  }
   .onboarding-page {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     width: 100%;
     height: calc(100 * var(--vh));
-    gap: calc(5 * var(--vh));
+    /* gap: calc(5 * var(--vh)); */
     overflow-x: hidden;
-  }
-
-  .keyword-guide {
-    position: fixed;
-    top: calc(15 * var(--vh));
-    padding: 12px 0;
+    touch-action: none;
   }
 
   .onboarding-button {
@@ -125,11 +142,5 @@
   .keyword-article-even::-webkit-scrollbar {
     display: none;
     /* Chrome, Safari, Opera */
-  }
-
-  .back-button {
-    position: absolute;
-    top: 6px;
-    left: 6px;
   }
 </style>

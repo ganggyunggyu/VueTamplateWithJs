@@ -33,4 +33,15 @@ const router = createRouter({
   routes,
 });
 
+let previousRoute = null;
+
+router.beforeEach((to, from, next) => {
+  previousRoute = from;
+  next();
+});
+
+export function getPreviousRoute() {
+  return previousRoute;
+}
+
 export default router;

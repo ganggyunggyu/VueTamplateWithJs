@@ -12,10 +12,15 @@
   import useKeyword from '../../shared/hooks/useKeyword';
   import KeywordSelector from '../../shared/components/KeywordSelector.vue';
   import Button from '../../shared/components/Button.vue';
+  import { useRouter } from 'vue-router';
+
+  import { getPreviousRoute } from '@/router';
+  import Loading from '@/entities/landing/components/Loading.vue';
 
   const store = useContentStore();
   const { keywordsContentList } = storeToRefs(store);
   const { setKeywordContentList } = store;
+  const router = useRouter();
 
   const chatRefList = ref([]);
 
@@ -51,9 +56,24 @@
     const chatContainer = document.querySelector('.chat-container');
     chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
   });
+  const isLoadingRef = ref(true);
+  const timerRef = ref(null);
+
+  const previousRoute = ref(getPreviousRoute());
+
+  console.log(previousRoute);
+
+  if (previousRoute.value.name === 'Keyword') {
+    setTimeout(() => {
+      isLoadingRef.value = false;
+    }, 3000);
+  } else {
+    isLoadingRef.value = false;
+  }
 </script>
 <template>
   <main class="chat-page">
+    <Loading v-if="isLoadingRef" />
     <Header />
     <div class="chat-container">
       <Guide :guide-list="['최초 가이드', '입니다.']" />
