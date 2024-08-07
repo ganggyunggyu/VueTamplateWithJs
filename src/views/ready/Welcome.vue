@@ -18,7 +18,7 @@
       <Image class="logo-image" :src="LOGO" />
       <Image class="logo-image" :src="LOGO" />
     </header>
-    <Slide />
+    <Slide class="slide" />
     <Button
       :class="'black md submit-button'"
       @click="handleStartClick"
@@ -53,5 +53,8 @@
   .submit-button {
     position: fixed;
     bottom: calc(5 * var(--vh));
+  }
+  .slide {
+    width: 300px;
   }
 </style>
