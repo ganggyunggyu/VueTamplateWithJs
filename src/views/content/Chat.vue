@@ -3,6 +3,7 @@
   import { storeToRefs } from 'pinia';
 
   import { useContentStore } from '../../app/store/useContentStore';
+
   import ContentList from '../../features/content/components/ContentList.vue';
 
   import Header from '../../entities/content/components/Header.vue';
@@ -12,7 +13,6 @@
   import useKeyword from '../../shared/hooks/useKeyword';
   import KeywordSelector from '../../shared/components/KeywordSelector.vue';
   import Button from '../../shared/components/Button.vue';
-  import { useRouter } from 'vue-router';
 
   import { getPreviousRoute } from '@/router';
   import Loading from '@/entities/landing/components/Loading.vue';
@@ -20,7 +20,6 @@
   const store = useContentStore();
   const { keywordsContentList } = storeToRefs(store);
   const { setKeywordContentList } = store;
-  const router = useRouter();
 
   const chatRefList = ref([]);
 
@@ -116,23 +115,23 @@
     width: 100%;
     height: calc(100 * var(--vh));
     background-color: var(--color-gray-10);
+    touch-action: pan-y;
   }
   .chat-container {
-    position: relative;
-    bottom: calc(10 * var(--vh));
+    position: fixed;
+    top: calc(8 * var(--vh));
     width: 100%;
-    height: calc(82 * var(--vh));
-    margin-top: calc(8 * var(--vh));
-    padding-bottom: calc(10 * var(--vh));
+    max-height: calc(55 * var(--vh));
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+    touch-action: pan-y;
   }
   .keyword-selector-background {
     position: fixed;
     width: 100vw;
     height: calc(100 * var(--vh));
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
     z-index: 8;
   }
   .chat-keyword {
