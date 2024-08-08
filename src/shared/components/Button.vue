@@ -91,6 +91,7 @@
     border-radius: 16px;
     padding: 7.5px 12px 8.5px 12px;
     transition: all 0.5s;
+    box-shadow: 0px 4px 10px rgba(188, 188, 121, 0.3);
   }
   .chip-md {
     display: flex;

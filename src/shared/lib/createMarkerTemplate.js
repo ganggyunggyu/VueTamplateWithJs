@@ -12,7 +12,7 @@ const headphoneIcon = `
     </svg>
 `;
 
-export const userMarker = () => {
+export const userMarkerTemplate = () => {
   const mobileContentArray = `
     <div class="user-marker-container">
       <span class="user-marker " />
@@ -21,7 +21,7 @@ export const userMarker = () => {
   return mobileContentArray;
 };
 
-export const selectedContentMarker = () => {
+export const selectedContentMarkerTemplate = () => {
   const mobileContentArray = `
 <div class="content-marker-container">
   <svg
@@ -99,7 +99,7 @@ export const selectedContentMarker = () => {
   return mobileContentArray;
 };
 
-export const defaultContentMarker = ({ contentType }) => {
+export const defaultContentMarkerTemplate = ({ contentType }) => {
   const marker = `
 <div class="default-content-marker-container">
           ${contentType === 'docent' && headphoneIcon}

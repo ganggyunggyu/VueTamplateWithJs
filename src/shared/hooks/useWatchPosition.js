@@ -1,7 +1,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
-import { getDistance } from '../lib/getDistance.js';
 import { useLatLngStore } from '../../app/store/useLatLngStore.js';
+import { getDistance } from '../lib/getDistance.js';
 
 const useWatchPosition = ({ callback }) => {
   const latLngStore = useLatLngStore();
@@ -26,16 +26,7 @@ const useWatchPosition = ({ callback }) => {
 
   const onSuccess = (result) => {
     const pos = result.coords;
-    posRef.value = {
-      ...posRef.value,
-      accuracy: pos.accuracy,
-      latitude: pos.latitude,
-      longitude: pos.longitude,
-      altitude: pos.altitude,
-      altitudeAccuracy: pos.altitudeAccuracy,
-      heading: pos.heading,
-      speed: pos.speed,
-    };
+    posRef.value = pos;
 
     if (callback) {
       callback({
@@ -47,7 +38,7 @@ const useWatchPosition = ({ callback }) => {
       console.error('callback is undefined');
     }
 
-    const latLng = latLngStore.getLatLng({ id: 1 });
+    const latLng = latLngStore.getLatLng({ id: 3 });
 
     const distance = (
       getDistance({
@@ -68,7 +59,8 @@ const useWatchPosition = ({ callback }) => {
       3: '타임아웃이 발생하였습니다',
       default: '오류가 발생하였습니다.',
     };
-    alert(errorMessages[error.code] || errorMessages.default);
+    // alert(errorMessages[error.code] || errorMessages.default);
+    console.log(errorMessages[error.code] || errorMessages.default);
   };
 
   const startWatchPosition = () => {
@@ -99,7 +91,7 @@ const useWatchPosition = ({ callback }) => {
     clearWatchPosition();
   });
 
-  return { posRef, distanceRef };
+  return { posRef, distanceRef, startWatchPosition };
 };
 
 export default useWatchPosition;

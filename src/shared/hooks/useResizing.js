@@ -11,7 +11,6 @@ const useResizing = () => {
     event.preventDefault();
     const totalHeiht = window.innerHeight;
     startYRef.value = totalHeiht - event.touches[0].clientY - vh * 7.5;
-    console.log(startYRef.value);
     isTouchRef.value = true;
   };
 

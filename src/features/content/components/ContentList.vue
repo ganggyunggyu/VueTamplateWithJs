@@ -4,6 +4,7 @@
 
   import Button from '@/shared/components/Button.vue';
   import Guide from '@/entities/content/components/Guide.vue';
+  import { scrollToBottom } from '@/shared/lib/scrollToBottom';
 
   const props = defineProps({
     contentList: Array,
@@ -27,14 +28,10 @@
     }
   });
 
-  // const scrollToBottom = () => {
-  //   const chatContainer = document.querySelector('.chat-container');
-  //   chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-  // };
-  // watch(displayedContentList, async () => {
-  //   await nextTick();
-  //   scrollToBottom();
-  // });
+  watch(displayedContentList, async () => {
+    await nextTick();
+    scrollToBottom({ className: 'chat-container' });
+  });
 </script>
 <template>
   <Guide v-if="props.guideList" :guide-list="props.guideList" />

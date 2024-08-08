@@ -1,100 +1,122 @@
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
-import { userMarker, defaultContentMarker } from '../lib/createMarker';
+import {
+  defaultContentMarkerTemplate,
+  userMarkerTemplate,
+} from '../lib/createMarkerTemplate';
 import { useContentStore } from '@/app/store/useContentStore';
 
 const { naver } = window;
+let userMarker;
+let map;
+const contentMarkerList = [];
 
 const useMap = () => {
   const contentStore = useContentStore();
-
-  const mapRef = ref(null);
-  const markerRef = ref(null);
-  const markerListRef = ref(null);
-
-  const createMap = ({ lat, lng }) => {
-    const option = {
-      center: new naver.maps.LatLng(lat, lng),
-      zoom: 20,
-      zoomControl: false,
-      zoomControlOptions: {
-        position: naver.maps.Position.TOP_RIGHT,
-      },
-    };
-    mapRef.value = new naver.maps.Map('map', option);
+  const INIT_POSITION = {
+    lat: 37.2937501,
+    lng: 127.0493446,
+    // lat: 37.288993,
+    // lng: 127.0043861,
   };
 
-  const createMarker = ({ lat, lng }) => {
+  const positionRef = ref({ lat: null, lng: null });
+
+  const createMap = () => {
+    const option = {
+      center: new naver.maps.LatLng(INIT_POSITION),
+      zoom: 20,
+      zoomControl: false,
+    };
+    map = new naver.maps.Map('map', option);
+  };
+
+  // const setMapCenter = ({ lat, lng }) => {
+  //   const position = new naver.map.LatLng(lat, lng);
+  //   mapRef.value.setCenter(position);
+  // };
+
+  const createUserMarker = ({ lat, lng }) => {
     const position = new naver.maps.LatLng(lat, lng);
-    markerRef.value = new naver.maps.Marker({
+    userMarker = new naver.maps.Marker({
       position: position,
-      map: mapRef.value,
+      map: map,
       icon: {
         title: 'userPosition',
-        content: userMarker({ title: 'userPosition' }),
+        content: userMarkerTemplate({ title: 'userPosition' }),
 
         size: new naver.maps.Size(38, 58),
 
         anchor: new naver.maps.Point(19, 58),
       },
     });
+    userMarker.setMap(map);
   };
-  const deleteContentMarker = ({ markerList }) => {
-    for (const marker of markerList) {
-      marker.setMap(null);
+
+  const updateUserMarker = ({ lat, lng }) => {
+    const position = new naver.maps.LatLng(lat, lng);
+    userMarker.setPosition(position);
+  };
+
+  const deleteContentMarker = () => {
+    if (contentMarkerList) {
+      for (const marker of contentMarkerList) {
+        marker.setMap(null);
+      }
+      contentMarkerList.splice(0, 0);
     }
-    markerList = null;
   };
 
   const createContentMarker = ({ contentList }) => {
-    if (markerListRef.value) {
-      deleteContentMarker({ markerList: markerListRef.value });
-    }
-    const markerList = [];
+    deleteContentMarker();
 
     for (const content of contentList) {
-      if (!content.latLng) break;
-      console.log(content);
+      if (!content.latLng) continue;
+
       const { lat, lng } = content.latLng;
       const position = new naver.maps.LatLng(lat, lng);
       const marker = new naver.maps.Marker({
         position: position,
-        map: mapRef.value,
+        map: map,
         icon: {
           title: 'userPosition',
-          content: defaultContentMarker({ contentType: 'docent' }),
+          content: defaultContentMarkerTemplate({ contentType: 'docent' }),
           size: new naver.maps.Size(38, 58),
           anchor: new naver.maps.Point(19, 58),
         },
       });
-      markerList.push(marker);
+      marker.setMap(map);
+      contentMarkerList.push(marker);
     }
-    markerListRef.value = [...markerList];
-  };
-
-  const updateMarker = ({ lat, lng }) => {
-    const position = new naver.maps.LatLng(lat, lng);
-    markerRef.value.setPosition(position);
-  };
-
-  const Initialization = ({ lat, lng }) => {
-    if (!mapRef.value) createMap({ lat, lng });
-    if (!markerRef.value) createMarker({ lat, lng });
-    createContentMarker({ contentList: contentStore.contentListRef });
   };
 
   const watchSuccessCallback = ({ lat, lng }) => {
-    Initialization({ lat, lng });
-    updateMarker({ lat, lng });
+    positionRef.value = { lat: lat, lng: lng };
+    if (userMarker) {
+      updateUserMarker({
+        lat: positionRef.value.lat,
+        lng: positionRef.value.lng,
+      });
+    } else {
+      createUserMarker({
+        lat: positionRef.value.lat,
+        lng: positionRef.value.lng,
+      });
+    }
   };
 
-  onBeforeRouteLeave(() => {
-    mapRef.value = null;
-    markerRef.value = null;
-    markerListRef.value = null;
+  onMounted(() => {
+    createMap();
+    createContentMarker({ contentList: contentStore.contentListRef });
   });
 
-  return { mapRef, watchSuccessCallback, createContentMarker };
+  onBeforeRouteLeave(() => {
+    map = null;
+    userMarker = null;
+    contentMarkerList.splice(0, 0);
+  });
+
+  return { watchSuccessCallback, createContentMarker };
 };
 
 export default useMap;

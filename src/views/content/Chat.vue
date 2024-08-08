@@ -1,22 +1,19 @@
 <script setup>
   import { ref, watch, nextTick } from 'vue';
   import { storeToRefs } from 'pinia';
-
   import { useContentStore } from '../../app/store/useContentStore';
-
   import ContentList from '../../features/content/components/ContentList.vue';
-
   import Header from '../../entities/content/components/Header.vue';
   import Guide from '../../entities/content/components/Guide.vue';
   import BottomNavigation from '../../entities/content/components/BottomNavigation.vue';
-
   import useKeyword from '../../shared/hooks/useKeyword';
   import KeywordSelector from '../../shared/components/KeywordSelector.vue';
   import Button from '../../shared/components/Button.vue';
-
-  import { getPreviousRoute } from '@/router';
   import Loading from '@/entities/landing/components/Loading.vue';
   import BottomArrowIcon from '@/shared/icons/BottomArrowIcon.vue';
+  import { getPreviousRoute } from '@/router';
+  import { scrollToBottom } from '@/shared/lib/scrollToBottom';
+
   const store = useContentStore();
   const { keywordsContentList } = storeToRefs(store);
   const { setKeywordContentList } = store;
@@ -42,23 +39,19 @@
       guideList: ['알랄ㄹ랄랄', '알랄ㄹ랄랄', '알랄ㄹ랄랄'],
     };
     closeKeywordSelector();
-
     const copyChetList = [...chatRefList.value];
     copyChetList.push(newChat);
-
     chatRefList.value = [...copyChetList];
-    console.log(chatRefList.value);
   };
   const handleScrollBottomClick = () => {
     const chatContainer = document.querySelector('.chat-container');
     chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // watch(chatRefList, async () => {
-  //   await nextTick();
-  //   const chatContainer = document.querySelector('.chat-container');
-  //   chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-  // });
+  watch(chatRefList, async () => {
+    await nextTick();
+    scrollToBottom({ className: 'chat-container' });
+  });
   const isLoadingRef = ref(true);
 
   const previousRoute = ref(getPreviousRoute());
@@ -138,18 +131,23 @@
     position: fixed;
     width: 100vw;
     height: calc(100 * var(--vh));
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
     z-index: 8;
   }
   .chat-keyword {
     position: fixed;
     bottom: calc(12 * var(--vh));
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.2);
     z-index: 9;
   }
   .submit-button {
     position: fixed;
     bottom: calc(12 * var(--vh));
+    background: linear-gradient(
+      180deg,
+      rgba(243, 243, 243, 0, 4) 0%,
+      #f3f3f3 100%
+    );
   }
   .down-botton {
     position: fixed;
@@ -162,5 +160,6 @@
     justify-content: center;
     background-color: var(--color-white);
     border-radius: 50%;
+    box-shadow: 0px 4px 20px rgba(188, 188, 121, 0.2);
   }
 </style>

@@ -12,7 +12,9 @@
   import useResizing from '@/shared/hooks/useResizing';
   import CrosshairIcon from '@/shared/icons/CrosshairIcon.vue';
   import useMap from '@/shared/hooks/useMap';
+
   const { createContentMarker } = useMap();
+
   const contentStore = useContentStore();
   const { setFloorContentList } = contentStore;
   const { contentListRef } = storeToRefs(contentStore);
@@ -25,22 +27,67 @@
   } = useResizing();
 
   const displayContentList = ref([]);
+  const selectChipRef = ref('전체');
 
-  const handleContentListClick = ({ floor }) => {
-    const contentList = setFloorContentList({ floor: floor });
-    displayContentList.value = [...contentList];
-    createContentMarker({ contentList: contentList });
+  const handleGetPositionClick = () => {
+    if ('permissions' in navigator) {
+      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+        if (result.state === 'granted') {
+          console.log(result);
+        } else if (result.state === 'prompt') {
+          console.log(result);
+        } else if (result.state === 'denied') {
+          console.log(result);
+        }
+        result.onchange = () => {
+          if (result.state === 'granted') {
+            console.log(result);
+          }
+        };
+      });
+    }
   };
-
-  const handleAllContentClick = () => {
-    const contentList = [...contentListRef.value];
-    displayContentList.value = [...contentList];
-    createContentMarker({ contentList: contentList });
+  const handleCategoryClick = ({ floor }) => {
+    // 이건 앞으로 들어오는 데이터에 따라 floor가 아니라 type or id와 같은 로직으로 변경 예정
+    if (floor === 0) {
+      const contentList = [...contentListRef.value];
+      displayContentListRef.value = [...contentList];
+      createContentMarker({ contentList: contentList });
+      selectCategoryRef.value = '전체';
+      return;
+    } else {
+      const contentList = setFloorContentList({ floor: floor });
+      displayContentListRef.value = [...contentList];
+      createContentMarker({ contentList: contentList });
+      selectCategoryRef.value = `${floor}층`;
+    }
   };
 
   onMounted(() => {
     displayContentList.value = [...contentListRef.value];
   });
+  const NAVIGATION_INFO = [
+    {
+      id: 0,
+      label: '전체',
+      category: '전체',
+    },
+    {
+      id: 1,
+      label: '1층',
+      category: '1층',
+    },
+    {
+      id: 2,
+      label: '2층',
+      category: '2층',
+    },
+    {
+      id: 3,
+      label: '3층',
+      category: '3층',
+    },
+  ];
 </script>
 
 <template>
@@ -48,21 +95,13 @@
     <header class="header">
       <h1 class="header-title title-16px">지도</h1>
       <nav class="header-nav">
-        <Button @click="handleAllContentClick" class="nav-item" label="전체" />
         <Button
-          @click="handleContentListClick({ floor: 1 })"
-          class="nav-item"
-          label="1층"
-        />
-        <Button
-          @click="handleContentListClick({ floor: 2 })"
-          class="nav-item"
-          label="2층"
-        />
-        <Button
-          @click="handleContentListClick({ floor: 3 })"
-          class="nav-item"
-          label="3층"
+          v-for="nav of NAVIGATION_INFO"
+          :key="nav.id"
+          @click="handleCategoryClick({ floor: nav.id })"
+          class="chip-sm"
+          :class="nav.category === selectChipRef ? 'chip-gray' : 'chip-white'"
+          :label="nav.label"
         />
       </nav>
     </header>
@@ -87,6 +126,7 @@
       </div>
     </section>
     <Button
+      @click="handleGetPositionClick"
       class="cross-hair button"
       :icon="CrosshairIcon"
       icon-size="icon-md"
@@ -120,12 +160,6 @@
     padding-left: 16px;
   }
 
-  .nav-item {
-    background-color: var(--color-gray-10);
-    padding: 7px 12px;
-    border-radius: 88px;
-  }
-
   .content-container {
     display: flex;
     flex-direction: column;
@@ -150,6 +184,8 @@
     transition: 0.5s background-color;
     z-index: 2;
     touch-action: none;
+    box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.2);
+    border-radius: 12px 12px 0 0;
   }
   .content-container-header-active {
     background-color: var(--color-gray-20);
@@ -171,6 +207,8 @@
     bottom: calc(10 * var(--vh));
     z-index: 1;
     transition: 0.15s height;
+    background-color: var(--color-white);
+    border-radius: 12px 12px 0 0;
   }
   .cross-hair {
     z-index: 999;
