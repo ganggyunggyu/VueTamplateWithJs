@@ -16,7 +16,7 @@
 
   import { getPreviousRoute } from '@/router';
   import Loading from '@/entities/landing/components/Loading.vue';
-
+  import BottomArrowIcon from '@/shared/icons/BottomArrowIcon.vue';
   const store = useContentStore();
   const { keywordsContentList } = storeToRefs(store);
   const { setKeywordContentList } = store;
@@ -49,18 +49,19 @@
     chatRefList.value = [...copyChetList];
     console.log(chatRefList.value);
   };
-
-  watch(chatRefList, async () => {
-    await nextTick();
+  const handleScrollBottomClick = () => {
     const chatContainer = document.querySelector('.chat-container');
     chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-  });
+  };
+
+  // watch(chatRefList, async () => {
+  //   await nextTick();
+  //   const chatContainer = document.querySelector('.chat-container');
+  //   chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  // });
   const isLoadingRef = ref(true);
-  const timerRef = ref(null);
 
   const previousRoute = ref(getPreviousRoute());
-
-  console.log(previousRoute);
 
   if (previousRoute.value.name === 'Keyword') {
     setTimeout(() => {
@@ -102,6 +103,12 @@
         class="submit-button black lg"
         label="키워드 선택"
       />
+      <Button
+        class="down-botton"
+        @click="handleScrollBottomClick"
+        :icon="BottomArrowIcon"
+        iconSize="icon-md"
+      />
     </TransitionGroup>
     <BottomNavigation />
   </main>
@@ -115,7 +122,7 @@
     width: 100%;
     height: calc(100 * var(--vh));
     background-color: var(--color-gray-10);
-    touch-action: pan-y;
+    touch-action: none;
   }
   .chat-container {
     position: fixed;
@@ -143,5 +150,17 @@
   .submit-button {
     position: fixed;
     bottom: calc(12 * var(--vh));
+  }
+  .down-botton {
+    position: fixed;
+    bottom: calc(20 * var(--vh));
+    right: 5%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-white);
+    border-radius: 50%;
   }
 </style>

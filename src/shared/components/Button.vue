@@ -31,10 +31,11 @@
   }
 
   .md {
-    min-width: 144px;
+    min-width: 120px;
+    min-height: 46px;
     font-size: 14px;
     font-weight: 700;
-    padding: 12px 32px 14px 32px;
+    padding: 12px 34.5px 14px 34.5px;
     border-radius: 24px;
   }
 

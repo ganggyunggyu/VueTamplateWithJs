@@ -55,6 +55,6 @@
     bottom: calc(5 * var(--vh));
   }
   .slide {
-    width: 300px;
+    width: 230px;
   }
 </style>

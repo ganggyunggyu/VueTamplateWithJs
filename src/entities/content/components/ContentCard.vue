@@ -41,8 +41,11 @@
     align-items: center;
     background-color: var(--color-white);
     padding: 8px;
+    margin-bottom: 5px;
     border-radius: 8px;
     border: 1px solid var(--color-gray-10);
+    box-shadow: 0px 4px 10px rgba(118, 118, 121, 0.3);
+    touch-action: pan-y;
   }
 
   .card-image {

@@ -1,6 +1,6 @@
 <script setup>
   import Image from '@/shared/components/Image.vue';
-  import { LOGO } from '@/assets/constants/image';
+  import { LOGO } from '@/shared/resources/main';
 
   const props = defineProps(['guide']);
 </script>

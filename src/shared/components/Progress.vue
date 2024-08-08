@@ -14,7 +14,12 @@
 </script>
 <template>
   <div>
-    <progress :class="color && color" :value="value" min="0" max="100"></progress>
+    <progress
+      :class="color && color"
+      :value="value"
+      min="0"
+      max="100"
+    ></progress>
     <div class="text-container">
       <p v-for="p in textList">{{ p }}</p>
     </div>
@@ -23,7 +28,7 @@
 <style scoped>
   progress {
     appearance: none;
-    width: 260px;
+    width: 130px;
   }
   progress::-webkit-progress-bar {
     background: rgba(0, 0, 0, 0.2);
@@ -39,7 +44,7 @@
     width: 48px;
   }
   .red::-webkit-progress-value {
-    background-color: red;
+    background-color: var(--color-gray-40);
   }
   .text-container {
     display: flex;

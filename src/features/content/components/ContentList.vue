@@ -19,11 +19,6 @@
     displayedContentList.value = [...props.contentList];
   };
 
-  const scrollToBottom = () => {
-    const chatContainer = document.querySelector('.chat-container');
-    chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   onMounted(() => {
     if (props.contentList.length < 4) {
       displayedContentList.value = [...props.contentList];
@@ -32,10 +27,14 @@
     }
   });
 
-  watch(displayedContentList, async () => {
-    await nextTick();
-    scrollToBottom();
-  });
+  // const scrollToBottom = () => {
+  //   const chatContainer = document.querySelector('.chat-container');
+  //   chatContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  // };
+  // watch(displayedContentList, async () => {
+  //   await nextTick();
+  //   scrollToBottom();
+  // });
 </script>
 <template>
   <Guide v-if="props.guideList" :guide-list="props.guideList" />

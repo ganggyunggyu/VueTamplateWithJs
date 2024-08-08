@@ -23,7 +23,7 @@ const useResizing = () => {
       const totalHeiht = window.innerHeight;
       const newTopHeiht = totalHeiht - event.touches[0].clientY - vh * 7.5;
 
-      if (newTopHeiht > vh * 30 && newTopHeiht < vh * 70)
+      if (newTopHeiht > vh * 30 && newTopHeiht < vh * 83)
         newHeightRef.value = newTopHeiht;
     }
   };
@@ -35,13 +35,13 @@ const useResizing = () => {
         newHeightRef.value = vh * 30;
       }
       if (startYRef.value > newHeightRef.value) {
-        newHeightRef.value = vh * 70;
+        newHeightRef.value = vh * 83;
       }
       isTouchRef.value = false;
       return;
     }
     if (startYRef.value < newHeightRef.value) {
-      newHeightRef.value = vh * 70;
+      newHeightRef.value = vh * 83;
     }
     if (startYRef.value > newHeightRef.value) {
       newHeightRef.value = vh * 30;

@@ -1,7 +1,7 @@
 <script setup>
   import Progress from '@/shared/components/Progress.vue';
   import Image from '@/shared/components/Image.vue';
-  import { BACKGROUND, LOGO } from '@/assets/constants/image';
+  import { LOGO } from '@/shared/resources/main';
 </script>
 <template>
   <main class="loading-page">
@@ -20,7 +20,7 @@
     flex-direction: column;
     gap: 10px;
     z-index: 999;
-    background-color: white;
+    background-color: var(--color-white);
   }
   .background-image {
     width: 100%;

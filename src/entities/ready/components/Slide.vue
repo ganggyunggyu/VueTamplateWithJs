@@ -2,16 +2,22 @@
   import 'vue3-carousel/dist/carousel.css';
   import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 
-  const slides = [
-    { id: '1', title: 'Vue 3 Introduction', content: 'VueJS is a library' },
-    { id: '2', title: 'Vue 3 Components', content: 'Know the components' },
-    { id: '3', title: 'Vue 3 Conditional', content: 'Rendering Conditionally' },
-    { id: '4', title: 'Vue 3 Reactivity', content: 'VueJS is Reactive' },
-    {
-      id: '5',
-      title: 'Vue 3 Compute',
-      content: 'VueJS uses computed properties',
-    },
+  import Image from '@/shared/components/Image.vue';
+
+  import {
+    SLIDE_0,
+    SLIDE_1,
+    SLIDE_2,
+    SLIDE_3,
+    SLIDE_4,
+  } from '@/shared/resources/slide';
+
+  const SLIDE_INFO = [
+    { id: 0, imageUrl: SLIDE_0 },
+    { id: 1, imageUrl: SLIDE_1 },
+    { id: 2, imageUrl: SLIDE_2 },
+    { id: 3, imageUrl: SLIDE_3 },
+    { id: 4, imageUrl: SLIDE_4 },
   ];
 
   const breakpoints = {
@@ -30,10 +36,9 @@
 
 <template>
   <Carousel :wrap-around="true" :breakpoints="breakpoints">
-    <Slide v-for="slide in slides" :key="slide.id">
+    <Slide v-for="slide in SLIDE_INFO" :key="slide.id">
       <div class="carousel__item">
-        <h3>{{ slide.title }}</h3>
-        <p>{{ slide.content }}</p>
+        <Image class="carousel-image" :src="slide.imageUrl" />
       </div>
     </Slide>
 
@@ -46,10 +51,10 @@
 
 <style>
   .carousel__item {
-    min-height: calc(50 * var(--vh));
+    /* min-height: calc(50 * var(--vh)); */
+    min-height: 280px;
     width: 100%;
-    background-color: var(--vc-clr-primary);
-    color: var(--vc-clr-white);
+    background-color: var(--color-white);
     font-size: 20px;
     border-radius: 8px;
     justify-content: center;
@@ -58,23 +63,33 @@
   .carousel__slide {
     padding: 10px;
   }
+  .carousel__pagination {
+    padding-top: 8px;
+  }
   .carousel__pagination-button::after {
     border-radius: 50%;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
   }
   .carousel__prev,
   .carousel__next {
     box-sizing: content-box;
     border: 5px solid white;
-    background-color: var(--color-gray-30);
+    background-color: var(--color-gray-40);
     color: var(--color-white);
     border-radius: 50%;
+    width: 40px;
+    height: 40px;
   }
   .carousel__next {
-    right: -50px;
+    right: -65px;
   }
   .carousel__prev {
-    left: -50px;
+    left: -65px;
+  }
+  .carousel-image {
+    width: 100%;
+    min-height: 280px;
+    border-radius: 5px;
   }
 </style>
