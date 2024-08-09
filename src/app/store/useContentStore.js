@@ -13,9 +13,22 @@ export const useContentStore = defineStore('content', () => {
   const selectedKeywordList = ref(
     JSON.parse(localStorage.getItem('selectedKeywordList')) || [],
   );
+  const selectedContent = ref(null);
 
   const keywordsContentList = ref([]);
   const keywordContentList = ref([]);
+
+  const setSelectedContent = ({ content }) => {
+    selectedContent.value = content;
+  };
+
+  const getSelectedContent = () => {
+    if (selectedContent.value) {
+      return selectedContent;
+    } else {
+      return null;
+    }
+  };
 
   const getKeywordsContentList = ({ keywordIdList }) => {
     if (!keywordIdList.value) return null;
@@ -96,6 +109,8 @@ export const useContentStore = defineStore('content', () => {
     keywordsContentList,
     keywordContentList,
     setDistanceForContentList,
+    setSelectedContent,
+    getSelectedContent,
     getKeywordContentList,
     getFloorContentList,
     getContentListSortedByAlphabet,

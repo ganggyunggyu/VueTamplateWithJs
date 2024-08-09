@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, onMounted, ref, watch } from 'vue';
   import { storeToRefs } from 'pinia';
 
   import { useContentStore } from '@/app/store/useContentStore';
@@ -49,27 +49,12 @@
   const selectSortedTypeRef = ref('가나다 순');
   const isDropdown = ref(false);
   const floorLevel = ref(0);
-
-  const displayContentListRef = computed(() => {
-    const contentList = getFloorContentList({ floor: floorLevel.value });
-
-    if (selectSortedTypeRef.value === '가나다 순') {
-      const sortedContentList = getContentListSortedByAlphabet({
-        contentListParam: contentList,
-      });
-      createContentMarker({ contentList: sortedContentList });
-      return sortedContentList;
-    } else if (selectSortedTypeRef.value === '가까운 순') {
-      const sortedContentList = getContentListSortedByDistance({
-        contentListParam: contentList,
-      });
-      createContentMarker({ contentList: sortedContentList });
-      return sortedContentList;
+  const isTagging = computed(() => {
+    if (floorLevel.value === 0) {
+      return false;
+    } else {
+      return true;
     }
-
-    createContentMarker({ contentList: contentList });
-
-    return contentList;
   });
 
   const { createContentMarker } = useMap();
@@ -84,6 +69,37 @@
   const { watchSuccessCallback } = useMap();
   const { handleGetPositionClick } = useWatchPosition({
     callback: watchSuccessCallback,
+  });
+
+  const displayContentListRef = computed(() => {
+    const contentList = getFloorContentList({ floor: floorLevel.value });
+
+    if (selectSortedTypeRef.value === '가나다 순') {
+      const sortedContentList = getContentListSortedByAlphabet({
+        contentListParam: contentList,
+      });
+      createContentMarker({
+        contentList: sortedContentList,
+        isTagging: isTagging.value,
+      });
+      return sortedContentList;
+    } else if (selectSortedTypeRef.value === '가까운 순') {
+      const sortedContentList = getContentListSortedByDistance({
+        contentListParam: contentList,
+      });
+      createContentMarker({
+        contentList: sortedContentList,
+        isTagging: isTagging.value,
+      });
+      return sortedContentList;
+    }
+
+    createContentMarker({
+      contentList: contentList,
+      isTagging: isTagging.value,
+    });
+
+    return contentList;
   });
 
   const toggleDropdown = () => {
@@ -105,7 +121,10 @@
   };
 
   onMounted(() => {
-    createContentMarker({ contentList: displayContentListRef.value });
+    createContentMarker({
+      contentList: displayContentListRef.value,
+      isTagging: isTagging.value,
+    });
     displayContentListRef.value = contentListRef.value;
   });
 </script>
@@ -203,8 +222,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 1;
+    z-index: 2;
   }
   .header-title {
     padding: 15px 17px 16px 16px;
@@ -291,7 +309,7 @@
   .dropdown-container {
     position: absolute;
     right: 10px;
-    top: 9px;
+    top: 5px;
     z-index: 3;
   }
   .dropdown-list {

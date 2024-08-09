@@ -29,6 +29,10 @@
   width: 16px;
   height: 16px;
 }
+.icon-sm {
+  width: 20px;
+  height: 20px;
+}
 .icon-md {
   width: 28px;
   height: 28px;
@@ -47,6 +51,7 @@
   border-radius: 50%;
   animation: ping-animation 1.5s infinite;
   background-color: var(--color-gray-20);
+  z-index: 2;
 }
 .user-marker {
   width: 16px;
@@ -54,37 +59,30 @@
   background-color: #5a71ec;
   border-radius: 50%;
 }
-.content-marker-container {
+.selected-content-marker-container {
   position: relative;
-  width: 47px;
+  width: 48px;
   height: 52px;
-  background-color: none;
+  z-index: 3;
 }
-.content-marker {
-  width: 100%;
-  height: 100%;
-}
-.content-marker-image {
+.selected-content-marker-container-image {
   position: absolute;
-  width: 32px;
-  height: 32px;
-  left: 7px;
+  left: 9px;
   top: 7px;
+  width: 34px;
+  height: 34px;
   border-radius: 7px;
+  border: 1px solid var(--color-white);
 }
-.default-content-marker-container {
+.default-marker-container {
   position: relative;
-  width: 60px;
-  height: 65px;
+  width: 28px;
+  height: 33px;
 }
-.default-content-marker {
+.default-marker-icon {
   position: absolute;
-  top: 0;
-  left: 0;
-}
-.default-content-marker-icon {
-  position: absolute;
+  width: 100%;
   top: 50%;
-  left: 50%;
-  transform: translate(-53%, -80%);
+  left: 19px;
+  transform: translate(-50%, -50%);
 }

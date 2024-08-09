@@ -2,6 +2,7 @@ import { onMounted, ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import {
   defaultContentMarkerTemplate,
+  selectedContentMarkerTemplate,
   userMarkerTemplate,
 } from '../lib/createMarkerTemplate';
 import { useContentStore } from '@/app/store/useContentStore';
@@ -21,6 +22,7 @@ const useMap = () => {
   };
 
   const positionRef = ref({ lat: null, lng: null });
+  const selectedContent = ref(null);
 
   const createMap = () => {
     const option = {
@@ -30,11 +32,6 @@ const useMap = () => {
     };
     map = new naver.maps.Map('map', option);
   };
-
-  // const setMapCenter = ({ lat, lng }) => {
-  //   const position = new naver.map.LatLng(lat, lng);
-  //   mapRef.value.setCenter(position);
-  // };
 
   const createUserMarker = ({ lat, lng }) => {
     const position = new naver.maps.LatLng(lat, lng);
@@ -67,25 +64,71 @@ const useMap = () => {
     }
   };
 
-  const createContentMarker = ({ contentList }) => {
+  const handleMarkerClick = ({ marker, content, isTagging }) => {
+    const selectedContentMarker = {
+      title: 'selectedMarker',
+      content: selectedContentMarkerTemplate({
+        imageUrl: content.image,
+      }),
+      size: new naver.maps.Size(38, 58),
+      anchor: new naver.maps.Point(26, 75),
+    };
+    const defaultContentMarker = {
+      title: 'defaultContentMarker',
+      content: defaultContentMarkerTemplate({
+        contentType: 'docent',
+        isTagging: isTagging,
+      }),
+      size: new naver.maps.Size(38, 58),
+      anchor: new naver.maps.Point(19, 58),
+    };
+    if (!selectedContent.value) {
+      marker.setIcon(selectedContentMarker);
+      selectedContent.value = content;
+    } else {
+      if (content.id === selectedContent.value.id) {
+        marker.setIcon(defaultContentMarker);
+        selectedContent.value = null;
+      } else {
+        for (const marker of contentMarkerList) {
+          marker.setIcon(defaultContentMarker);
+        }
+        marker.setIcon(selectedContentMarker);
+        selectedContent.value = content;
+      }
+    }
+
+    map.panTo(marker.getPosition());
+  };
+
+  const createContentMarker = ({ contentList, isTagging }) => {
     deleteContentMarker();
 
     for (const content of contentList) {
       if (!content.latLng) continue;
-
       const { lat, lng } = content.latLng;
       const position = new naver.maps.LatLng(lat, lng);
       const marker = new naver.maps.Marker({
         position: position,
         map: map,
         icon: {
-          title: 'userPosition',
-          content: defaultContentMarkerTemplate({ contentType: 'docent' }),
+          title: 'defaultContentMarker',
+          content: defaultContentMarkerTemplate({
+            contentType: 'docent',
+            isTagging: isTagging,
+          }),
           size: new naver.maps.Size(38, 58),
           anchor: new naver.maps.Point(19, 58),
         },
       });
       marker.setMap(map);
+      naver.maps.Event.addListener(marker, 'click', () =>
+        handleMarkerClick({
+          marker: marker,
+          content: content,
+          isTagging: isTagging,
+        }),
+      );
       contentMarkerList.push(marker);
     }
   };
@@ -114,9 +157,10 @@ const useMap = () => {
     map = null;
     userMarker = null;
     contentMarkerList.splice(0, 0);
+    selectedContent.value = null;
   });
 
-  return { watchSuccessCallback, createContentMarker };
+  return { watchSuccessCallback, createContentMarker, selectedContent };
 };
 
 export default useMap;
