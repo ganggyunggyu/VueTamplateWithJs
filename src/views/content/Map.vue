@@ -1,72 +1,22 @@
 <script setup>
-  import { onMounted, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
   import { storeToRefs } from 'pinia';
 
-  import { useContentStore } from '../../app/store/useContentStore';
+  import { useContentStore } from '@/app/store/useContentStore';
 
-  import Map from '../../entities/content/components/Map.vue';
-  import ContentCard from '../../entities/content/components/ContentCard.vue';
-  import BottomNavigation from '../../entities/content/components/BottomNavigation.vue';
+  import Map from '@/entities/content/components/Map.vue';
+  import ContentCard from '@/entities/content/components/ContentCard.vue';
+  import BottomNavigation from '@/entities/content/components/BottomNavigation.vue';
 
-  import Button from '../../shared/components/Button.vue';
   import useResizing from '@/shared/hooks/useResizing';
-  import CrosshairIcon from '@/shared/icons/CrosshairIcon.vue';
   import useMap from '@/shared/hooks/useMap';
+  import useWatchPosition from '@/shared/hooks/useWatchPosition';
+  import Button from '@/shared/components/Button.vue';
+  import BottomArrowIcon from '@/shared/icons/BottomArrowIcon.vue';
+  import CheckRoundedIcon from '@/shared/icons/CheckRoundedIcon.vue';
+  import CrosshairIcon from '@/shared/icons/CrosshairIcon.vue';
 
-  const { createContentMarker } = useMap();
-
-  const contentStore = useContentStore();
-  const { setFloorContentList } = contentStore;
-  const { contentListRef } = storeToRefs(contentStore);
-  const {
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd,
-    isTouchRef,
-    newHeightRef,
-  } = useResizing();
-
-  const displayContentList = ref([]);
-  const selectChipRef = ref('전체');
-
-  const handleGetPositionClick = () => {
-    if ('permissions' in navigator) {
-      navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-        if (result.state === 'granted') {
-          console.log(result);
-        } else if (result.state === 'prompt') {
-          console.log(result);
-        } else if (result.state === 'denied') {
-          console.log(result);
-        }
-        result.onchange = () => {
-          if (result.state === 'granted') {
-            console.log(result);
-          }
-        };
-      });
-    }
-  };
-  const handleCategoryClick = ({ floor }) => {
-    // 이건 앞으로 들어오는 데이터에 따라 floor가 아니라 type or id와 같은 로직으로 변경 예정
-    if (floor === 0) {
-      const contentList = [...contentListRef.value];
-      displayContentListRef.value = [...contentList];
-      createContentMarker({ contentList: contentList });
-      selectCategoryRef.value = '전체';
-      return;
-    } else {
-      const contentList = setFloorContentList({ floor: floor });
-      displayContentListRef.value = [...contentList];
-      createContentMarker({ contentList: contentList });
-      selectCategoryRef.value = `${floor}층`;
-    }
-  };
-
-  onMounted(() => {
-    displayContentList.value = [...contentListRef.value];
-  });
-  const NAVIGATION_INFO = [
+  const MAP_TAG_LIST = [
     {
       id: 0,
       label: '전체',
@@ -88,6 +38,76 @@
       category: '3층',
     },
   ];
+  const contentStore = useContentStore();
+  const {
+    getFloorContentList,
+    getContentListSortedByAlphabet,
+    getContentListSortedByDistance,
+  } = contentStore;
+  const { contentListRef } = storeToRefs(contentStore);
+
+  const selectSortedTypeRef = ref('가나다 순');
+  const isDropdown = ref(false);
+  const floorLevel = ref(0);
+
+  const displayContentListRef = computed(() => {
+    const contentList = getFloorContentList({ floor: floorLevel.value });
+
+    if (selectSortedTypeRef.value === '가나다 순') {
+      const sortedContentList = getContentListSortedByAlphabet({
+        contentListParam: contentList,
+      });
+      createContentMarker({ contentList: sortedContentList });
+      return sortedContentList;
+    } else if (selectSortedTypeRef.value === '가까운 순') {
+      const sortedContentList = getContentListSortedByDistance({
+        contentListParam: contentList,
+      });
+      createContentMarker({ contentList: sortedContentList });
+      return sortedContentList;
+    }
+
+    createContentMarker({ contentList: contentList });
+
+    return contentList;
+  });
+
+  const { createContentMarker } = useMap();
+
+  const {
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+    isTouchRef,
+    newHeightRef,
+  } = useResizing();
+  const { watchSuccessCallback } = useMap();
+  const { handleGetPositionClick } = useWatchPosition({
+    callback: watchSuccessCallback,
+  });
+
+  const toggleDropdown = () => {
+    isDropdown.value = !isDropdown.value;
+  };
+
+  const handleCategoryClick = ({ floor }) => {
+    floorLevel.value = floor;
+  };
+
+  const handleSortedByAlphabetClick = () => {
+    selectSortedTypeRef.value = '가나다 순';
+    toggleDropdown();
+  };
+
+  const handleSortedByDistanceClick = () => {
+    selectSortedTypeRef.value = '가까운 순';
+    toggleDropdown();
+  };
+
+  onMounted(() => {
+    createContentMarker({ contentList: displayContentListRef.value });
+    displayContentListRef.value = contentListRef.value;
+  });
 </script>
 
 <template>
@@ -96,11 +116,11 @@
       <h1 class="header-title title-16px">지도</h1>
       <nav class="header-nav">
         <Button
-          v-for="nav of NAVIGATION_INFO"
+          v-for="nav of MAP_TAG_LIST"
           :key="nav.id"
           @click="handleCategoryClick({ floor: nav.id })"
           class="chip-sm"
-          :class="nav.category === selectChipRef ? 'chip-gray' : 'chip-white'"
+          :class="nav.id === floorLevel ? 'chip-gray' : 'chip-white'"
           :label="nav.label"
         />
       </nav>
@@ -117,9 +137,45 @@
       >
         <div class="bar" />
       </div>
+      <section class="dropdown-container body-12px">
+        <button
+          @click="toggleDropdown"
+          class="selected-item"
+          :class="isDropdown && 'dropdown-item-selected'"
+        >
+          <p>{{ selectSortedTypeRef }}</p>
+          <BottomArrowIcon class="icon-xs" />
+        </button>
+        <TransitionGroup name="fade">
+          <li v-if="isDropdown" class="dropdown-list">
+            <ul
+              @click="handleSortedByAlphabetClick"
+              class="dropdown-item dropdown-item-top"
+              :class="
+                selectSortedTypeRef === '가나다 순' && 'dropdown-item-selected'
+              "
+            >
+              <p>가나다 순</p>
+              <CheckRoundedIcon v-if="selectSortedTypeRef === '가나다 순'" />
+              <div v-else class="empty-box" />
+            </ul>
+            <ul
+              @click="handleSortedByDistanceClick"
+              class="dropdown-item dropdown-item-bottom"
+              :class="
+                selectSortedTypeRef === '가까운 순' && 'dropdown-item-selected'
+              "
+            >
+              <p>가까운 순</p>
+              <CheckRoundedIcon v-if="selectSortedTypeRef === '가까운 순'" />
+              <div v-else class="empty-box" />
+            </ul>
+          </li>
+        </TransitionGroup>
+      </section>
       <div class="content-container scroll">
         <ContentCard
-          v-for="content in displayContentList"
+          v-for="content in displayContentListRef"
           :key="content.id"
           :content="content"
         />
@@ -161,6 +217,7 @@
   }
 
   .content-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -220,5 +277,49 @@
     background-color: var(--color-white);
     border-radius: 50%;
     z-index: 0;
+  }
+  .selected-item {
+    width: 92px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 5.5px 0 6.5px 0;
+    border-radius: 10px;
+    z-index: 3;
+  }
+  .dropdown-container {
+    position: absolute;
+    right: 10px;
+    top: 9px;
+    z-index: 3;
+  }
+  .dropdown-list {
+    border: 1px solid var(--color-gray-20);
+    border-radius: 10px;
+  }
+  .dropdown-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 90px;
+    padding: 5.5px 0 6.5px 0;
+    background-color: var(--color-white);
+    border-radius: 10px;
+  }
+  .dropdown-item-selected {
+    background-color: var(--color-gray-10);
+    transition: 0.5s background-color;
+  }
+  .dropdown-item-top {
+    border-radius: 10px 10px 0 0;
+  }
+  .dropdown-item-bottom {
+    border-radius: 0 0 10px 10px;
+  }
+  .empty-box {
+    width: 16px;
+    height: 16px;
   }
 </style>

@@ -9,7 +9,7 @@ export const CONTENT_KO = {
       address: '광주광역시 북구 비엔날레로 111',
       detailedLocation: 'GALLERY 1',
       sequence: 1,
-      title: '오주 2.0',
+      title: '가가가가',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
       image:
@@ -26,13 +26,13 @@ export const CONTENT_KO = {
       address: '광주광역시 북구 비엔날레로 111',
       detailedLocation: 'GALLERY 1',
       sequence: 2,
-      title: '여기에는 더 이상 자리가 없어요',
+      title: '나나나나',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 7, 10],
-      floorLevel: 2,
+      floorLevel: 1,
       latLng: { lat: 37.294017, lng: 127.049517 },
     },
     {
@@ -43,13 +43,13 @@ export const CONTENT_KO = {
       address: '광주광역시 북구 비엔날레로 111',
       detailedLocation: 'GALLERY 1',
       sequence: 3,
-      title: '타이틀즈',
+      title: '다다다다',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [4, 7, 16],
-      floorLevel: 2,
+      floorLevel: 1,
       latLng: { lat: 37.2937779, lng: 127.0495892 },
     },
     {
@@ -60,7 +60,7 @@ export const CONTENT_KO = {
       address: '광주광역시 북구 비엔날레로 111',
       detailedLocation: 'GALLERY 1',
       sequence: 4,
-      title: '맹인을 인도하는 맹인',
+      title: '라라라라',
       artistName: '작가 이름 없음',
       artistIntroduction: '대충 번역한 내용',
       image:
@@ -83,7 +83,7 @@ export const CONTENT_KO = {
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [2, 6, 12],
-      floorLevel: 3,
+      floorLevel: 2,
     },
     {
       id: 6,
@@ -99,7 +99,7 @@ export const CONTENT_KO = {
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [5, 9, 13],
-      floorLevel: 3,
+      floorLevel: 2,
     },
     {
       id: 7,
@@ -131,7 +131,7 @@ export const CONTENT_KO = {
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [3, 7, 15],
-      floorLevel: 2,
+      floorLevel: 3,
     },
     {
       id: 9,
@@ -147,7 +147,7 @@ export const CONTENT_KO = {
       image:
         'https://cdn.pixabay.com/photo/2012/11/28/08/56/mona-lisa-67506_640.jpg',
       keywordIds: [1, 6, 10],
-      floorLevel: 1,
+      floorLevel: 3,
     },
     {
       id: 10,

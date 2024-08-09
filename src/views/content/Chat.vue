@@ -1,6 +1,5 @@
 <script setup>
   import { ref, watch, nextTick } from 'vue';
-  import { storeToRefs } from 'pinia';
   import { useContentStore } from '../../app/store/useContentStore';
   import ContentList from '../../features/content/components/ContentList.vue';
   import Header from '../../entities/content/components/Header.vue';
@@ -14,18 +13,20 @@
   import { getPreviousRoute } from '@/router';
   import { scrollToBottom } from '@/shared/lib/scrollToBottom';
 
-  const store = useContentStore();
-  const { keywordsContentList } = storeToRefs(store);
-  const { setKeywordContentList } = store;
+  const contentStore = useContentStore();
+  const { getKeywordsContentList, getKeywordContentList } = contentStore;
 
   const chatRefList = ref([]);
+  const isLoadingRef = ref(true);
+  const selectedKeywordListRef = ref(
+    JSON.parse(localStorage.getItem('selectedKeywordList')) || [],
+  );
 
   const isKeywordSelector = ref(false);
 
   const { setSelectedKeyword, keywordGroupRef, getIsSelected } = useKeyword({
     size: 6,
   });
-
   const closeKeywordSelector = () => {
     isKeywordSelector.value = false;
   };
@@ -35,7 +36,7 @@
   const handleKeywordClick = (id) => {
     setSelectedKeyword(id);
     const newChat = {
-      contentList: setKeywordContentList({ keywordId: id }),
+      contentList: getKeywordContentList({ keywordId: id }),
       guideList: ['알랄ㄹ랄랄', '알랄ㄹ랄랄', '알랄ㄹ랄랄'],
     };
     closeKeywordSelector();
@@ -52,11 +53,14 @@
     await nextTick();
     scrollToBottom({ className: 'chat-container' });
   });
-  const isLoadingRef = ref(true);
 
-  const previousRoute = ref(getPreviousRoute());
+  const initContentList = getKeywordsContentList({
+    keywordIdList: selectedKeywordListRef,
+  });
 
-  if (previousRoute.value.name === 'Keyword') {
+  const previousRoute = getPreviousRoute();
+
+  if (previousRoute.name === 'Keyword') {
     setTimeout(() => {
       isLoadingRef.value = false;
     }, 3000);
@@ -70,7 +74,7 @@
     <Header />
     <div class="chat-container">
       <Guide :guide-list="['최초 가이드', '입니다.']" />
-      <ContentList :contentList="keywordsContentList" />
+      <ContentList :contentList="initContentList" />
       <ContentList
         v-for="chat of chatRefList"
         :contentList="chat.contentList"

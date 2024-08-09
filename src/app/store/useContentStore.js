@@ -2,6 +2,7 @@ import { ref, watch } from 'vue';
 import { defineStore, storeToRefs } from 'pinia';
 import { useLanguageStore } from './useLanguageStore';
 import { CONTENT_EN, CONTENT_KO } from '@/assets/constants/test2';
+import { getDistance } from '@/shared/lib/getDistance';
 
 export const useContentStore = defineStore('content', () => {
   const languageStore = useLanguageStore();
@@ -16,23 +17,24 @@ export const useContentStore = defineStore('content', () => {
   const keywordsContentList = ref([]);
   const keywordContentList = ref([]);
 
-  const setKeywordsContentList = ({ keywordIdList }) => {
+  const getKeywordsContentList = ({ keywordIdList }) => {
     if (!keywordIdList.value) return null;
+    const contentList = [];
     for (const content of contentListRef.value) {
       const contentKeywordList = content.keywordIds;
       for (const contentKeyword of contentKeywordList) {
         const isMatchContent = keywordIdList.value.includes(contentKeyword);
         if (isMatchContent) {
-          keywordsContentList.value = [...keywordsContentList.value, content];
+          contentList.push(content);
           break;
         }
       }
     }
+    return contentList;
   };
 
-  const setKeywordContentList = ({ keywordId }) => {
+  const getKeywordContentList = ({ keywordId }) => {
     const contentList = [];
-    console.log(contentListRef.value);
     for (const content of contentListRef.value) {
       const { keywordIds: contentKeywordIdList } = content;
       const isContentMatch = contentKeywordIdList.includes(keywordId);
@@ -40,15 +42,43 @@ export const useContentStore = defineStore('content', () => {
         contentList.push(content);
       }
     }
-    keywordContentList.value = [...contentList];
-    return keywordContentList.value;
+    return contentList;
   };
 
-  const setFloorContentList = ({ floor }) => {
-    const selectedContent = contentListRef.value.filter(
+  const getFloorContentList = ({ floor }) => {
+    if (floor === 0) return contentListRef.value;
+    const contentList = contentListRef.value.filter(
       (content) => content.floorLevel === floor,
     );
-    return selectedContent;
+    return contentList;
+  };
+
+  const setDistanceForContentList = ({ lat, lng }) => {
+    contentListRef.value.forEach((content) => {
+      if (content.latLng) {
+        content.distance = +getDistance({
+          lat1: lat,
+          lon1: lng,
+          lat2: content.latLng.lat,
+          lon2: content.latLng.lng,
+        });
+      }
+    });
+  };
+
+  const getContentListSortedByDistance = ({ contentListParam }) => {
+    const contentList = contentListParam.sort((a, b) => {
+      if (!a.distance || !b.distance) return;
+      return a.distance - b.distance;
+    });
+    return contentList;
+  };
+
+  const getContentListSortedByAlphabet = ({ contentListParam }) => {
+    const contentList = contentListParam.sort((a, b) =>
+      a.title.localeCompare(b.title),
+    );
+    return contentList;
   };
 
   watch(
@@ -59,13 +89,17 @@ export const useContentStore = defineStore('content', () => {
     },
   );
 
-  setKeywordsContentList({ keywordIdList: selectedKeywordList });
+  getKeywordsContentList({ keywordIdList: selectedKeywordList });
 
   return {
     contentListRef,
     keywordsContentList,
-    setKeywordContentList,
-    setFloorContentList,
     keywordContentList,
+    setDistanceForContentList,
+    getKeywordContentList,
+    getFloorContentList,
+    getContentListSortedByAlphabet,
+    getKeywordsContentList,
+    getContentListSortedByDistance,
   };
 });

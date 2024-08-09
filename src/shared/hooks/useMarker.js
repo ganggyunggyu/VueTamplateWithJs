@@ -1,4 +1,4 @@
-import { userMarker } from '../lib/createMarker';
+import { userMarker } from '../lib/createMarkerTemplate';
 
 const useMarker = () => {
   const createUserMarker = ({ lat, lng }) => {
